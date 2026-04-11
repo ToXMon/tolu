@@ -1,0 +1,86 @@
+{
+  "repo": "tolu",
+  "description": "Agent Zero Memory Palace & Daily Backup",
+  "version": "1.0.0",
+  "last_backup": "2026-04-11 01:10:50 UTC",
+  "sections": {
+    "agent-zero-backup": {
+      "description": "Daily automated backup of Agent Zero instance",
+      "auto_updated": true,
+      "subdirs": [
+        "agents",
+        "knowledge",
+        "memory-export",
+        "plugins",
+        "prompts",
+        "skills",
+        "workdir"
+      ]
+    },
+    "memory-palace": {
+      "description": "Organized knowledge vault",
+      "auto_updated": false,
+      "subdirs": {
+        "books": {
+          "subdirs": [
+            "summaries",
+            "references",
+            "reading-lists"
+          ]
+        },
+        "youtube": {
+          "subdirs": [
+            "channels",
+            "playlists",
+            "transcripts"
+          ]
+        },
+        "references": {
+          "subdirs": [
+            "technical",
+            "academic",
+            "tools"
+          ]
+        },
+        "knowledge": {
+          "subdirs": [
+            "general",
+            "domain-specific",
+            "howtos"
+          ]
+        }
+      }
+    },
+    "prompt-library": {
+      "description": "Prompt engineering resources",
+      "auto_updated": false,
+      "subdirs": [
+        "system-prompts",
+        "task-prompts",
+        "prompt-techniques",
+        "templates"
+      ]
+    },
+    "skills": {
+      "description": "Agent Zero custom skills (SKILL.md format)",
+      "auto_updated": false
+    },
+    "plugins": {
+      "description": "Agent Zero custom plugins",
+      "auto_updated": false
+    },
+    "configs": {
+      "description": "Agent configurations",
+      "auto_updated": false,
+      "subdirs": [
+        "agent-profiles",
+        "model-configs",
+        "scheduler-tasks"
+      ]
+    },
+    "scripts": {
+      "description": "Automation and backup scripts",
+      "auto_updated": false
+    }
+  }
+}
