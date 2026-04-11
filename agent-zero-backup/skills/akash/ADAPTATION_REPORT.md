@@ -250,4 +250,83 @@ Akash implemented the **Burn-Mint Equilibrium (BME)** model with Mainnet 17:
 | Gas/staking uakt references preserved | **29** ✅ |
 | Staking/delegation uakt references | **4** ✅ |
 | Total uact references (deployment) | **209** ✅ |
+
+---
+
+## Phase 4: Final Audit Remediation (2026-04-11)
+
+Based on `FINAL_AUDIT_REPORT.md` findings. All critical deployment service gaps addressed.
+
+### Tier 1 — New Documentation Files
+
+| # | File | Lines | Description |
+|---|------|-------|-------------|
+| 1 | `docs/deploy/console-api/multi-tenant-guide.md` | ~2,754 | Multi-tenant deployment service architecture, onboarding flows, AuthZ delegation, fee delegation, TypeScript scaffold |
+| 2 | `docs/authz/deployment-service-pattern.md` | ~1,725 | End-to-end AuthZ + FeeGrant + Managed Wallet pattern with full TypeScript code for all 7 steps |
+| 3 | `docs/deploy/console-api/event-monitoring.md` | ~2,025 | Polling patterns, lease status detection, bid monitoring, event-driven architecture, alert system |
+
+### Tier 2 — Fixes to Existing Files
+
+| # | File | Fix Applied |
+|---|------|------------|
+| 4a | `docs/sdk/typescript/installation.md` | Added deprecation notice + migration section for `@akashnetwork/akash-api` → `@akashnetwork/chain-sdk` |
+| 4b | `docs/sdk/typescript/chain-node-sdk.md` | Added deprecation notice at top |
+| 4c | `docs/sdk/typescript/chain-web-sdk.md` | Added deprecation notice at top |
+| 4d | `docs/sdk/typescript/provider-sdk.md` | Added deprecation notice + localStorage security warning |
+| 4e | `docs/sdk/overview.md` | Added deprecation notice + updated package references in SDK table |
+| 5 | `docs/authz/using-grants.md` | Added missing `MsgCloseDeployment` import + deprecation notice |
+| 6 | `docs/sdk/go/client-setup.md` | Added full AuthZ Operations section (MsgGrant, MsgExec, FeeGrant, querying grants) — 326 → 743 lines |
+| 7 | `docs/deploy/console-api/overview.md` | Added PUT /deployment, GET /deployments, GET /wallet/list, GET /wallet/default endpoints |
+
+### Tier 3 — Quality Improvements
+
+| # | File | Change |
+|---|------|--------|
+| 8 | `docs/sdk/typescript/provider-sdk.md` | Added security warning block re: localStorage private key storage with 5 recommended alternatives |
+| 9a | `SKILL.md` | Added 3 new files to documentation index |
+| 9b | `SKILL.md` | Added trigger patterns: `akash deployment service`, `deploy on behalf of`, `multi-tenant akash` |
+
+### Files Modified Summary
+
+| Action | Count | Files |
+|--------|-------|-------|
+| **Created** | 3 | multi-tenant-guide.md, deployment-service-pattern.md, event-monitoring.md |
+| **Patched** | 8 | installation.md, chain-node-sdk.md, chain-web-sdk.md, provider-sdk.md, overview.md (sdk), using-grants.md, client-setup.md, overview.md (console-api) |
+| **Updated** | 2 | SKILL.md, ADAPTATION_REPORT.md |
+| **Total** | 13 | — |
 | Total uakt references (gas/staking only) | **47** ✅ |
+
+---
+
+## Optimization Pass — Final Accuracy Corrections
+
+**Date:** 2026-04-11
+**Source:** ACCURACY_AUDIT_REPORT.md
+**Scope:** P0–P3 accuracy corrections and content additions
+
+### Changes Applied
+
+| Priority | ID | File | Change |
+|----------|-----|------|--------|
+| **P0** | CRITICAL | `SKILL.md` lines 198–203 | Rewrote "Deployment Duration Limits" to distinguish trial (24h) vs regular (unlimited) deployments |
+| **P0** | CRITICAL | `docs/core-concepts/overview.md` lines 116–123 | Fixed same incorrect 24h claim — now clearly states trial-only limit |
+| **P1** | HIGH | `SKILL.md` line 24 | Updated target version v1.2.0 (mainnet-16) → v2.0.0 (mainnet-17) |
+| **P1** | HIGH | `docs/deploy/cli/installation.md` | Updated all v1.2.0 download URLs → v2.0.0 |
+| **P1** | HIGH | `docs/node/full-node/installation.md` | Updated `AKASH_VERSION="v1.2.0"` → `v2.0.0` |
+| **P1** | HIGH | `docs/node/validator/operations.md` | Updated cosmovisor upgrade directories from `upgrade-v1.2.0` → `upgrade-v2.0.0` |
+| **P1** | HIGH | `docs/deploy/cli/bme-commands.md` | **NEW FILE** — Full BME CLI reference (mint-act, burn-act, burn-mint, gas config, workflow) |
+| **P2** | MEDIUM | `docs/deploy/console-api/credit-card-api.md` | **NEW FILE** — Credit card / trial API docs (AEP-63, endpoints, rate limits, TypeScript SDK) |
+| **P2** | MEDIUM | `docs/deploy/console-api/multi-tenant-guide.md` line 2651 | Fixed `denom: uakt` → `denom: uact` in SDL example |
+| **P3** | LOW | `SKILL.md` frontmatter | Added `allowed_tools`, updated `description`, added 8 trigger patterns, version → 2.1.0 |
+| **P3** | LOW | `SKILL.md` quick reference | Added BME Commands section + Credit Card/Trial Deployments section |
+| **P3** | LOW | `SKILL.md` doc index | Added bme-commands.md and credit-card-api.md to index |
+| **P3** | LOW | `docs/reference/rpc-endpoints.md` | Added Forbole and EcoStake community RPC providers |
+
+### Files Modified Summary
+
+| Action | Count | Files |
+|--------|-------|-------|
+| **Created** | 2 | bme-commands.md, credit-card-api.md |
+| **Patched** | 7 | SKILL.md, overview.md, installation.md (cli), installation.md (node), operations.md, multi-tenant-guide.md, rpc-endpoints.md |
+| **Updated** | 1 | ADAPTATION_REPORT.md |
+| **Total** | 10 | — |

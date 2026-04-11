@@ -1,13 +1,15 @@
 # SDK Overview
 
+> ⚠️ **Note:** The package `@akashnetwork/akash-api` (TypeScript) and `github.com/akash-network/akash-api` (Go) are being replaced by newer packages. See migration notes below.
+
 Akash provides official SDKs for programmatic integration with the network.
 
 ## Available SDKs
 
 | SDK | Language | Package | Use Case |
 |-----|----------|---------|----------|
-| **TypeScript** | JS/TS | `@akashnetwork/akashjs` | Web apps, Node.js |
-| **Go** | Go | `github.com/akash-network/akash-api` | Backend services |
+| **TypeScript** | JS/TS | `@akashnetwork/akashjs` + `@akashnetwork/chain-sdk` | Web apps, Node.js |
+| **Go** | Go | `github.com/akash-network/node` | Backend services |
 
 ## SDK Comparison
 

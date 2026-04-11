@@ -1,5 +1,7 @@
 # Using AuthZ Grants
 
+> ⚠️ **Note:** Examples below use `@akashnetwork/akash-api` which has been deprecated. Use `@akashnetwork/chain-sdk` instead.
+
 Execute transactions on behalf of a granter using AuthZ.
 
 ## CLI Usage
@@ -50,7 +52,9 @@ akash tx authz exec unsigned_tx.json \
 
 ```typescript
 import { MsgExec } from "cosmjs-types/cosmos/authz/v1beta1/tx";
-import { MsgCreateDeployment } from "@akashnetwork/akash-api/akash/deployment/v1beta3";
+// DEPRECATED: Use @akashnetwork/chain-sdk instead
+import { MsgCreateDeployment, MsgCloseDeployment } from "@akashnetwork/akash-api/akash/deployment/v1beta3";
+// NEW: import { MsgCreateDeployment, MsgCloseDeployment } from "@akashnetwork/chain-sdk/build/akash/deployment/v1beta3";
 
 async function executeAsGrantee(
   client: SigningStargateClient,

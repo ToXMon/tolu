@@ -266,10 +266,10 @@ cosmovisor run version
 │   └── bin/
 │       └── akash         # Initial binary
 ├── upgrades/
-│   ├── upgrade-v1.2.0/
+│   ├── upgrade-v2.0.0/
 │   │   └── bin/
 │   │       └── akash     # Upgrade binary
-│   └── upgrade-v1.2.0/
+│   └── upgrade-v2.0.0/
 │       └── bin/
 │           └── akash     # Future upgrade binary
 └── current -> genesis/   # Symlink to active version

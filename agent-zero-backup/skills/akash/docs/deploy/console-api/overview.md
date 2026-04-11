@@ -42,9 +42,10 @@ See **authentication.md** for setup details.
 |--------|----------|-------------|
 | `POST` | `/deployment` | Create new deployment |
 | `GET` | `/deployment/{dseq}` | Get deployment details |
+| `PUT` | `/deployment` | Update deployment (modify SDL, scale services) |
 | `DELETE` | `/deployment/{dseq}` | Close deployment |
 | `POST` | `/deployment/{dseq}/deposit` | Add funds to deployment |
-
+| `GET` | `/deployments` | List all user deployments |
 ### Providers
 
 | Method | Endpoint | Description |
@@ -74,6 +75,8 @@ See **authentication.md** for setup details.
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `POST` | `/wallet/create` | Create managed wallet |
+| `GET` | `/wallet/list` | List all managed wallets |
+| `GET` | `/wallet/default` | Get default wallet |
 | `GET` | `/wallet/balance` | Get wallet balance |
 | `POST` | `/wallet/deposit` | Request deposit address |
 

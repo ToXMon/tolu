@@ -1,5 +1,7 @@
 # TypeScript SDK Installation
 
+> ⚠️ **Note:** The package `@akashnetwork/akash-api` has been deprecated. Use `@akashnetwork/chain-sdk` instead. Migration examples are provided below.
+
 Install and configure the Akash TypeScript SDK for your project.
 
 ## Package
@@ -116,7 +118,27 @@ import { SDL } from "@akashnetwork/akashjs/build/sdl";
 import { sendManifest } from "@akashnetwork/akashjs/build/provider";
 
 // Protobuf types
+// Protobuf types (DEPRECATED - use @akashnetwork/chain-sdk)
+// OLD: import { MsgCreateDeployment } from "@akashnetwork/akash-api/akash/deployment/v1beta3";
+// NEW: import { MsgCreateDeployment } from "@akashnetwork/chain-sdk/build/akash/deployment/v1beta3";
+```
+
+## Migration: @akashnetwork/akash-api → @akashnetwork/chain-sdk
+
+```typescript
+// ═══════════════════════════════════════════════════════
+// DEPRECATED — @akashnetwork/akash-api
+// ═══════════════════════════════════════════════════════
 import { MsgCreateDeployment } from "@akashnetwork/akash-api/akash/deployment/v1beta3";
+import { MsgCloseDeployment } from "@akashnetwork/akash-api/akash/deployment/v1beta3";
+import { MsgCreateLease } from "@akashnetwork/akash-api/akash/market/v1beta4";
+
+// ═══════════════════════════════════════════════════════
+// NEW — @akashnetwork/chain-sdk
+// ═══════════════════════════════════════════════════════
+import { MsgCreateDeployment } from "@akashnetwork/chain-sdk/build/akash/deployment/v1beta3";
+import { MsgCloseDeployment } from "@akashnetwork/chain-sdk/build/akash/deployment/v1beta3";
+import { MsgCreateLease } from "@akashnetwork/chain-sdk/build/akash/market/v1beta4";
 ```
 
 ## Environment Setup

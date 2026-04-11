@@ -27,6 +27,8 @@ akashnet-2
 | Polkachu | `https://akash-rpc.polkachu.com:443` | `https://akash-api.polkachu.com:443` |
 | Cosmos Directory | `https://rpc-akash.cosmos-spaces.cloud` | `https://api-akash.cosmos-spaces.cloud` |
 | NodeStake | `https://rpc.akash.nodestake.org` | `https://api.akash.nodestake.org` |
+| Forbole | `https://akash-rpc.forbole.com:443` | `https://akash-api.forbole.com:443` |
+| EcoStake | `https://akash.rpc.ecostake.com` | `https://akash.api.ecostake.com` |
 
 ### Archive Nodes
 

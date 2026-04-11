@@ -23,18 +23,18 @@ Download from [GitHub Releases](https://github.com/akash-network/node/releases):
 
 ```bash
 # Linux AMD64
-wget https://github.com/akash-network/node/releases/download/v1.2.0/akash_1.2.0_linux_amd64.deb
-unzip akash_1.2.0_linux_amd64.deb
+wget https://github.com/akash-network/node/releases/download/v2.0.0/akash_2.0.0_linux_amd64.deb
+unzip akash_2.0.0_linux_amd64.deb
 sudo mv akash /usr/local/bin/
 
 # macOS AMD64
-wget https://github.com/akash-network/node/releases/download/v1.2.0/akash_1.2.0_darwin_amd64.tar.gz
-unzip akash_1.2.0_darwin_amd64.tar.gz
+wget https://github.com/akash-network/node/releases/download/v2.0.0/akash_2.0.0_darwin_amd64.tar.gz
+unzip akash_2.0.0_darwin_amd64.tar.gz
 sudo mv akash /usr/local/bin/
 
 # macOS ARM64 (Apple Silicon)
-wget https://github.com/akash-network/node/releases/download/v1.2.0/akash_1.2.0_darwin_arm64.tar.gz
-unzip akash_1.2.0_darwin_arm64.tar.gz
+wget https://github.com/akash-network/node/releases/download/v2.0.0/akash_2.0.0_darwin_arm64.tar.gz
+unzip akash_2.0.0_darwin_arm64.tar.gz
 sudo mv akash /usr/local/bin/
 ```
 
@@ -43,7 +43,7 @@ sudo mv akash /usr/local/bin/
 ```bash
 git clone https://github.com/akash-network/node
 cd node
-git checkout v1.2.0
+git checkout v2.0.0
 make install
 ```
 
@@ -55,7 +55,7 @@ akash version
 
 Expected output:
 ```
-v1.2.0
+v2.0.0
 ```
 
 ## Initial Configuration

@@ -1,4 +1,5 @@
 # Provider SDK
+> ⚠️ **Note:** The package `@akashnetwork/akash-api` has been deprecated. Use `@akashnetwork/chain-sdk` instead.
 
 Communicating with Akash providers using the TypeScript SDK.
 
@@ -29,8 +30,17 @@ async function createCertificate(address: string) {
   }));
 
   return cert;
-}
 ```
+
+> ⚠️ **Security Warning:** Storing private keys in `localStorage` is **not secure** for production applications. `localStorage` is accessible via XSS attacks and browser extensions.
+>
+> **Recommended alternatives:**
+> - **Server-side key management**: Store encrypted keys server-side with user authentication
+> - **Hardware Security Modules (HSM)**: Use cloud HSM services (AWS KMS, GCP KMS, Azure Key Vault)
+> - **Browser wallet delegation**: Use Keplr/Leap wallet for key management instead of direct storage
+> - **Encrypted storage**: If client-side storage is required, encrypt with a user-derived key (e.g., PBKDF2 from password)
+> - **Session-based storage**: Use `sessionStorage` for ephemeral sessions (cleared on tab close)
+
 
 ### Broadcast Certificate On-Chain
 

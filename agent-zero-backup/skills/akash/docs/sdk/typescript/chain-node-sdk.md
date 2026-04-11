@@ -1,4 +1,5 @@
 # TypeScript Chain SDK (Node.js)
+> ⚠️ **Note:** The package `@akashnetwork/akash-api` has been deprecated. Use `@akashnetwork/chain-sdk` instead.
 
 Using the Akash TypeScript SDK for blockchain interactions in Node.js.
 

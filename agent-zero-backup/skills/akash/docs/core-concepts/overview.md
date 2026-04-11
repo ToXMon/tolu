@@ -115,12 +115,12 @@ The [Console API](https://console-api.akash.network/v1/swagger) provides REST en
 
 ## Deployment Duration Limits
 
-Deployments on Akash have a **maximum duration of 24 hours per bid order**. This means:
+Duration limits depend on deployment type:
 
-- Each deployment order (group) has a maximum lifetime of 24 hours
-- Tenants must re-create deployments or use automation to maintain long-running services
-- The 24-hour limit applies to the bid/lease duration, not the actual workload runtime
-- For persistent workloads, consider using the Console API or SDK with automated renewal
+- **Trial deployments** (credit card / Console): Maximum **24 hours** per deployment. 30-day trial period with $100 free credits. Auto-closure after 24h; you can redeploy.
+- **Regular deployments** (wallet-funded): **No duration limit**. Runs indefinitely as long as the deployment escrow account has sufficient funds (pay per block).
+
+> The 24-hour limit applies **only** to trial/credit card deployments. Wallet-funded deployments have no duration restriction.
 
 ## Shared Security Roadmap (AEP-79)
 

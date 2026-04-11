@@ -1,9 +1,16 @@
 ---
 name: "akash"
-description: "Comprehensive Akash Network skill for deployers, providers, and node operators. Covers SDL generation, CLI deployments, Console API, TypeScript/Go SDKs, provider setup, and validator operations."
-version: "2.0.0"
+description: "Akash Network (decentralized cloud) skill covering SDL generation, CLI deployments (akash + provider-services binaries), Console API with credit card support, BME/ACT token management, TypeScript/Go SDKs, provider setup, and validator operations. Targets Mainnet-17 (v2.0.0+)."
+version: "2.1.0"
 author: "baktun14 (adapted for Agent Zero)"
 tags: ["akash", "cloud", "deployment", "blockchain", "kubernetes", "SDL", "decentralized"]
+allowed_tools:
+  - "code_execution_tool"
+  - "search_engine"
+  - "document_query"
+  - "text_editor"
+  - "browser_agent"
+  - "call_subordinate"
 trigger_patterns:
   - "akash"
   - "deploy to akash"
@@ -14,11 +21,22 @@ trigger_patterns:
   - "akash validator"
   - "akash node"
   - "decentralized cloud"
+  - "akash deployment service"
+  - "deploy on behalf of"
+  - "multi-tenant akash"
+  - "akash act"
+  - "akash bme"
+  - "akash credit card"
+  - "akash console"
+  - "akash managed wallet"
+  - "akash uact"
+  - "akash certificate"
+  - "akash sdl"
 ---
 
 # Akash Network Skill
 
-Comprehensive skill for working with the Akash Network — the decentralized cloud computing marketplace. Current target version: **v1.2.0** (mainnet-16).
+Comprehensive skill for working with the Akash Network — the decentralized cloud computing marketplace. Current target version: **v2.0.0** (mainnet-17).
 
 ## When to Use This Skill
 
@@ -160,6 +178,34 @@ profiles:
 - **uakt**: Native Akash Token for staking, governance, and gas fees
 - **USDC**: Via IBC denom (e.g., `denom: ibc/170C677610AC31DF0904FFE09CD3B5C657492170E7E52372E48756B71E56F2F1`)
 
+### BME (Burn-Mint Equilibrium) Commands
+
+Since Mainnet-17, deployments use ACT (uact). Convert tokens:
+
+```bash
+# Mint ACT from AKT (epoch-based, ~1 min)
+akash tx bme mint-act 5000000uakt --from wallet -y
+
+# Burn ACT back to AKT
+akash tx bme burn-act 5000000uact --from wallet -y
+
+# Generic conversion
+akash tx bme burn-mint 1000000uakt uact --from wallet -y
+```
+
+Full reference: `docs/deploy/cli/bme-commands.md`
+
+### Credit Card / Trial Deployments
+
+Credit card users deploy via the Console API (AEP-63) with managed wallets — no mnemonics or CLI needed:
+
+- **Base URL**: `https://console-api.akash.network/v1`
+- **Swagger**: `https://console-api.akash.network/v1/swagger`
+- **Trial limits**: 24h deployment duration, 30-day trial, $100 free credits
+- **Rate limits**: Free (60 req/min, 10 deploys/day), Pro (300/100), Enterprise (unlimited)
+
+Full reference: `docs/deploy/console-api/credit-card-api.md`
+
 ### Key Deployment Commands (using provider-services)
 
 ```bash
@@ -194,10 +240,14 @@ akash tx gov vote PROPOSAL_ID yes --from validator-wallet
 
 ## Deployment Duration Limits
 
-Akash deployments have a **maximum duration of 24 hours** per bid order. For longer-running workloads:
-- Use automation to re-deploy before expiration
-- Consider using the Console API or SDKs for programmatic renewal
-- The SDL `deployment` section does NOT have a `duration` field longer than 24h
+Duration limits depend on deployment type:
+
+| Type | Max Duration | Funding | Notes |
+|------|-------------|---------|-------|
+| **Trial** (credit card / Console) | **24 hours** per deployment | $100 free credits | 30-day trial period; auto-closure after 24h; can redeploy |
+| **Regular** (wallet-funded) | **No limit** | Escrow (uact) | Runs indefinitely as long as escrow has funds; pay per block |
+
+> **Important:** The 24-hour limit applies **only to trial/credit card deployments**. Regular funded deployments run without duration restrictions.
 
 ## Documentation Index
 
@@ -227,11 +277,14 @@ Akash deployments have a **maximum duration of 24 hours** per bid order. For lon
 - `docs/deploy/cli/wallet-setup.md` — Wallet creation and funding
 - `docs/deploy/cli/deployment-lifecycle.md` — Full deployment workflow
 - `docs/deploy/cli/lease-management.md` — Managing active leases
-- `docs/deploy/cli/common-commands.md` — Command reference
+- `docs/deploy/cli/bme-commands.md` — BME token conversion commands (mint/burn ACT)
 - `docs/deploy/console-api/overview.md` — Console API for programmatic deployments
 - `docs/deploy/console-api/authentication.md` — Console API authentication
 - `docs/deploy/console-api/managed-wallet.md` — Managed wallet documentation
 - `docs/deploy/console-api/deployment-endpoints.md` — Deployment API endpoints
+- `docs/deploy/console-api/multi-tenant-guide.md` — Multi-tenant deployment service architecture
+- `docs/deploy/console-api/event-monitoring.md` — Event monitoring and webhook patterns
+- `docs/deploy/console-api/credit-card-api.md` — Credit card / trial deployment API (AEP-63)
 - `docs/deploy/certificates/jwt-auth.md` — JWT authentication (recommended)
 - `docs/deploy/certificates/mtls-legacy.md` — Legacy mTLS authentication
 
@@ -239,6 +292,7 @@ Akash deployments have a **maximum duration of 24 hours** per bid order. For lon
 - `docs/authz/overview.md` — AuthZ concepts and use cases
 - `docs/authz/granting-permissions.md` — Creating grants
 - `docs/authz/using-grants.md` — Using granted permissions
+- `docs/authz/deployment-service-pattern.md` — AuthZ + FeeGrant + Managed Wallet end-to-end pattern
 
 ### SDK Documentation
 - `docs/sdk/overview.md` — SDK comparison and selection guide
