@@ -1,0 +1,42 @@
+version: "2.1"
+
+services:
+  web:
+    image: nginx:1.25.3
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - ip: public-ip
+      - port: 443
+        as: 443
+        to:
+          - ip: public-ip
+
+endpoints:
+  public-ip:
+    kind: ip
+
+profiles:
+  compute:
+    web:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          size: 5Gi
+
+  placement:
+    dcloud:
+      pricing:
+        web:
+          denom: uact
+          amount: 1000
+
+deployment:
+  web:
+    dcloud:
+      profile: web
+      count: 1

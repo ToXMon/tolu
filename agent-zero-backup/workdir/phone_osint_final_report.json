@@ -1,0 +1,123 @@
+{
+  "target_phone": "(732) 874-0910",
+  "e164_format": "+17328740910",
+  "analysis_timestamp": "2026-04-08T23:31:00Z",
+  "phone_validation": {
+    "valid": true,
+    "country": "United States",
+    "region": "NJ (New Jersey)",
+    "number_type": "FIXED_LINE_OR_MOBILE",
+    "carrier": "AT&T (per Spokeo)",
+    "phone_type_detail": "Wireless (per Spokeo)",
+    "area_code": "732",
+    "area_code_coverage": "Central New Jersey: New Brunswick, Toms River, Lakewood, Freehold, Edison, Asbury Park",
+    "timezone": "America/New_York (Eastern)"
+  },
+  "owner_identification": {
+    "spokeo_data": {
+      "owners_found": 3,
+      "owner_location": "Edison, NJ",
+      "carrier": "AT&T",
+      "phone_type": "Wireless",
+      "area_code_location": "Asbury Park, NJ"
+    },
+    "unmask_data": {
+      "matches_found": 2,
+      "likely_current_owner": {
+        "name": "Catalino B Cheng",
+        "age": 72,
+        "location": "Edison, NJ",
+        "aliases": [
+          "Catalino Cheng",
+          "Catauno B Cheng"
+        ],
+        "phone_numbers": [
+          "(732) 750-1236",
+          "(732) 750-1736",
+          "(732) 874-0910",
+          "(732) 906-1598",
+          "(908) 281-5109"
+        ],
+        "address_history": [
+          "16 Sunshine Lane, Edison, NJ 08820",
+          "10458 North G Martinelli Boulevard, Dunnellon, FL 34433",
+          "Avenel, NJ 07001",
+          "Livingston, NJ 07039",
+          "Woodbridge, NJ 07095"
+        ],
+        "email_addresses": [
+          "art****@aol.com",
+          "cat****@yahoo.com"
+        ],
+        "relatives": [
+          "Elizabeth Cheng",
+          "Marie Cheng",
+          "Raymundo Cheng",
+          "Rogelio Cheng",
+          "Willie Cheng"
+        ]
+      },
+      "prior_association": {
+        "name": "Walter J Kellert",
+        "age": 66,
+        "location": "Brick, NJ",
+        "aliases": [
+          "R Kellert",
+          "W J Kellert",
+          "Walt Kellert"
+        ],
+        "phone_numbers": [
+          "(609) 619-3212",
+          "(732) 475-7164",
+          "(732) 727-3131",
+          "(732) 785-1050",
+          "(732) 836-0069"
+        ],
+        "address_history": [
+          "276 White Oak Court, Brick, NJ 08724",
+          "263 Oak Forest Drive, Brick, NJ 08724",
+          "Monroe Township, NJ 08831",
+          "Parlin, NJ 08859"
+        ],
+        "relatives": [
+          "Theresa Ely",
+          "Megan Ford",
+          "Claudia Kellert",
+          "Dawn Kellert",
+          "James Kellert"
+        ]
+      }
+    }
+  },
+  "cross_reference_analysis": {
+    "provided_names": {
+      "possible_person": "Deeksha",
+      "father": "Susheel",
+      "mother": "Venna"
+    },
+    "search_results": "None of the provided names (Deeksha, Susheel, Venna) were found in ANY of the public records, directory listings, or phone lookup databases queried for this phone number.",
+    "sources_checked": [
+      "Spokeo.com - No name match",
+      "Unmask.com - No name match (returned Catalino B Cheng and Walter J Kellert)",
+      "TruePeopleSearch.com - Blocked (403)",
+      "FastPeopleSearch.com - Blocked (403)",
+      "USPhoneBook.com - Blocked (403)",
+      "Whitepages.com - Blocked (403)",
+      "SyncMe.com - 404",
+      "SpyDialer.com - No results",
+      "AnyoneWho.com - No relevant data",
+      "411.com - Blocked (403)",
+      "CocoFinder.com - 404",
+      "ThatsThem.com - 404",
+      "OpenCNAM API - Auth required (401)",
+      "Numverify API - No access key"
+    ],
+    "identity_confidence": {
+      "deeksha_association": "NOT CONFIRMED - No public records link Deeksha to this phone number",
+      "susheel_association": "NOT CONFIRMED - No public records link Susheel to this phone number",
+      "venna_association": "NOT CONFIRMED - No public records link Venna to this phone number",
+      "overall": "The number is publicly associated with Catalino B Cheng (Edison, NJ) and previously with Walter J Kellert (Brick, NJ). The names Deeksha, Susheel, and Venna do not appear in any accessible public records for this number."
+    }
+  },
+  "conclusion": "The phone number (732) 874-0910 is a valid AT&T Wireless number located in Edison, NJ (area code 732, Central New Jersey). Public records from Unmask.com identify the current/most recent owner as Catalino B Cheng (age 72, Edison NJ). A prior association exists with Walter J Kellert (age 66, Brick NJ). The names Deeksha, Susheel, and Venna provided as family context were NOT found in any public records or directory databases associated with this phone number. This could mean: (1) the number has been reassigned, (2) the association is not captured in public records, or (3) the provided context names are not associated with this particular number."
+}
