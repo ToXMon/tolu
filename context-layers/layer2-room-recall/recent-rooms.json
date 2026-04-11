@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-04-11",
+  "recent_rooms": [
+    {
+      "wing": "technical",
+      "room": "agent-zero-setup",
+      "last_accessed": "2026-04-11",
+      "summary": "Agent Zero framework setup, configuration, and memory palace initialization"
+    },
+    {
+      "wing": "projects",
+      "room": "tolu-memory-palace",
+      "last_accessed": "2026-04-11",
+      "summary": "Main project — Memory Palace with daily backup to GitHub"
+    },
+    {
+      "wing": "domain",
+      "room": "akash-network",
+      "last_accessed": "2026-04-10",
+      "summary": "Akash decentralized cloud computing skill and deployment knowledge"
+    },
+    {
+      "wing": "learning",
+      "room": "here-now",
+      "last_accessed": "2026-04-10",
+      "summary": "Here Now platform skill development"
+    }
+  ]
+}

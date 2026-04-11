@@ -1,9 +1,26 @@
 {
   "repo": "tolu",
-  "description": "Agent Zero Memory Palace & Daily Backup",
-  "version": "1.0.0",
-  "last_backup": "2026-04-11 17:53:06 UTC",
+  "description": "Agent Zero Memory Palace & Daily Backup \u2014 Spatial Knowledge Vault",
+  "version": "2.0.0",
+  "last_backup": null,
+  "upgrades": {
+    "spatial_organization": "Wing/Room/Hall hierarchy with 6 wings",
+    "context_layers": "4-layer token-efficient wake-up stack (~200 tokens)",
+    "semantic_search": "TF-IDF search index for on-demand deep search",
+    "auto_cross_reference": "Tunnel generator linking related rooms across wings",
+    "temporal_tracking": "Knowledge graph with fact validity windows",
+    "token_efficiency": "~90% token savings vs full context loading"
+  },
   "sections": {
+    "context-layers": {
+      "description": "Token-efficient 4-layer wake-up stack",
+      "layers": [
+        "layer0-identity",
+        "layer1-critical-facts",
+        "layer2-room-recall",
+        "layer3-deep-search"
+      ]
+    },
     "agent-zero-backup": {
       "description": "Daily automated backup of Agent Zero instance",
       "auto_updated": true,
@@ -18,42 +35,20 @@
       ]
     },
     "memory-palace": {
-      "description": "Organized knowledge vault",
-      "auto_updated": false,
-      "subdirs": {
-        "books": {
-          "subdirs": [
-            "summaries",
-            "references",
-            "reading-lists"
-          ]
-        },
-        "youtube": {
-          "subdirs": [
-            "channels",
-            "playlists",
-            "transcripts"
-          ]
-        },
-        "references": {
-          "subdirs": [
-            "technical",
-            "academic",
-            "tools"
-          ]
-        },
-        "knowledge": {
-          "subdirs": [
-            "general",
-            "domain-specific",
-            "howtos"
-          ]
-        }
-      }
+      "description": "Spatial knowledge vault with Wing/Room/Hall organization",
+      "wings": [
+        "personal",
+        "projects",
+        "people",
+        "learning",
+        "technical",
+        "domain"
+      ],
+      "tunnels": "Auto-generated cross-wing references",
+      "temporal_facts": "Knowledge graph with validity windows"
     },
     "prompt-library": {
       "description": "Prompt engineering resources",
-      "auto_updated": false,
       "subdirs": [
         "system-prompts",
         "task-prompts",
@@ -62,16 +57,13 @@
       ]
     },
     "skills": {
-      "description": "Agent Zero custom skills (SKILL.md format)",
-      "auto_updated": false
+      "description": "Agent Zero custom skills (SKILL.md format)"
     },
     "plugins": {
-      "description": "Agent Zero custom plugins",
-      "auto_updated": false
+      "description": "Agent Zero custom plugins"
     },
     "configs": {
       "description": "Agent configurations",
-      "auto_updated": false,
       "subdirs": [
         "agent-profiles",
         "model-configs",
@@ -79,8 +71,22 @@
       ]
     },
     "scripts": {
-      "description": "Automation and backup scripts",
-      "auto_updated": false
+      "description": "Automation scripts",
+      "files": [
+        "daily-backup.sh",
+        "search-index.py",
+        "cross-reference.py",
+        "build-context.py"
+      ]
+    },
+    "docs": {
+      "description": "Framework integration guides",
+      "guides": [
+        "agent-zero.md",
+        "openclaw.md",
+        "openhermes.md",
+        "custom-providers.md"
+      ]
     }
   }
 }

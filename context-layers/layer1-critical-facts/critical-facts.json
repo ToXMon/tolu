@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-04-11",
+  "facts": [
+    {
+      "id": "f001",
+      "fact": "GitHub repo: github.com/ToXMon/tolu — daily backup target",
+      "category": "system",
+      "confidence": 1.0,
+      "valid_from": "2026-04-11",
+      "valid_to": null,
+      "source": "setup"
+    },
+    {
+      "id": "f002",
+      "fact": "Daily backup runs at 2:00 AM UTC via scheduler task tolu-daily-backup",
+      "category": "system",
+      "confidence": 1.0,
+      "valid_from": "2026-04-11",
+      "valid_to": null,
+      "source": "setup"
+    },
+    {
+      "id": "f003",
+      "fact": "Agent Zero runs in Docker on Kali Linux, root access",
+      "category": "environment",
+      "confidence": 1.0,
+      "valid_from": "2026-04-09",
+      "valid_to": null,
+      "source": "environment"
+    },
+    {
+      "id": "f004",
+      "fact": "Memory palace uses Wing/Room/Hall spatial organization with 6 wings",
+      "category": "architecture",
+      "confidence": 1.0,
+      "valid_from": "2026-04-11",
+      "valid_to": null,
+      "source": "setup"
+    },
+    {
+      "id": "f005",
+      "fact": "Context layers: identity → critical-facts → room-recall → deep-search",
+      "category": "architecture",
+      "confidence": 1.0,
+      "valid_from": "2026-04-11",
+      "valid_to": null,
+      "source": "setup"
+    },
+    {
+      "id": "f006",
+      "fact": "Venice AI is configured as OpenAI-compatible provider at api.venice.ai",
+      "category": "config",
+      "confidence": 1.0,
+      "valid_from": "2026-04-11",
+      "valid_to": null,
+      "source": "setup"
+    },
+    {
+      "id": "f007",
+      "fact": "User prefers Linux commands over Python for simple tasks",
+      "category": "preference",
+      "confidence": 1.0,
+      "valid_from": "2026-04-09",
+      "valid_to": null,
+      "source": "user"
+    },
+    {
+      "id": "f008",
+      "fact": "Akash Network skill installed — decentralized cloud computing",
+      "category": "skills",
+      "confidence": 1.0,
+      "valid_from": "2026-04-10",
+      "valid_to": null,
+      "source": "user"
+    }
+  ]
+}

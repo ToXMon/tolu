@@ -1,0 +1,41 @@
+{
+  "topic": "organization",
+  "discovered": "2026-04-11",
+  "connections": [
+    {
+      "wing": "README.md",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "learning",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "people",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "domain",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "technical",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "personal",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "projects",
+      "hall": "",
+      "file": "README.md"
+    }
+  ]
+}
