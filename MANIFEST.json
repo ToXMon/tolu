@@ -2,7 +2,7 @@
   "repo": "tolu",
   "description": "Agent Zero Memory Palace & Daily Backup \u2014 Spatial Knowledge Vault",
   "version": "2.0.0",
-  "last_backup": "2026-04-12 06:00:55 UTC",
+  "last_backup": "2026-04-13 06:00:40 UTC",
   "upgrades": {
     "spatial_organization": "Wing/Room/Hall hierarchy with 6 wings",
     "context_layers": "4-layer token-efficient wake-up stack (~200 tokens)",
