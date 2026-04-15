@@ -19,8 +19,8 @@ echo "🔄 Starting Tolu backup at $TIMESTAMP"
 cd "$REPO_DIR"
 
 # Ensure git credentials are configured
-git config user.name "Tolu Backup Bot" 2>/dev/null || true
-git config user.email "tolu-backup@agent-zero.local" 2>/dev/null || true
+git config user.name "ToXMon" 2>/dev/null || true
+git config user.email "112281672+ToXMon@users.noreply.github.com" 2>/dev/null || true
 
 # ─── Sync Agent Zero State ─────────────────────────────────────
 
