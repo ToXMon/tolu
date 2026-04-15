@@ -1,0 +1,9 @@
+{
+  "current_offset": 151,
+  "batch_size": 10,
+  "total_emails": 123961,
+  "batches_reviewed": 6,
+  "emails_reviewed": 60,
+  "emails_kept": 3,
+  "emails_deleted": 522
+}

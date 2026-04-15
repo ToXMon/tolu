@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "description": "Temporal knowledge graph — facts with validity windows. When a fact changes, it gets an end date rather than deletion.",
+  "schema": {
+    "id": "unique fact identifier",
+    "subject": "entity the fact is about",
+    "predicate": "relationship type (is_a, uses, located_in, configured_with, etc.)",
+    "object": "value or target entity",
+    "valid_from": "ISO date when fact became true",
+    "valid_to": "ISO date when fact stopped being true (null = still active)",
+    "source": "where this fact came from",
+    "confidence": "0.0 to 1.0",
+    "context": "additional context"
+  },
+  "facts": [
+    {"id": "t001", "subject": "tolu", "predicate": "backed_up_to", "object": "github.com/ToXMon/tolu", "valid_from": "2026-04-11", "valid_to": null, "source": "setup", "confidence": 1.0},
+    {"id": "t002", "subject": "agent-zero", "predicate": "runs_on", "object": "docker/kali-linux", "valid_from": "2026-04-09", "valid_to": null, "source": "environment", "confidence": 1.0},
+    {"id": "t003", "subject": "memory-palace", "predicate": "organized_as", "object": "wing/room/hall/spatial", "valid_from": "2026-04-11", "valid_to": null, "source": "setup", "confidence": 1.0},
+    {"id": "t004", "subject": "backup", "predicate": "scheduled_at", "object": "02:00 UTC daily", "valid_from": "2026-04-11", "valid_to": null, "source": "setup", "confidence": 1.0},
+    {"id": "t005", "subject": "tolu", "predicate": "uses_provider", "object": "venice-ai", "valid_from": "2026-04-11", "valid_to": null, "source": "setup", "confidence": 1.0}
+  ]
+}
