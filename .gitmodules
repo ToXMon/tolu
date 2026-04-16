@@ -1,0 +1,24 @@
+[submodule "agent-zero-backup/workdir/browserpod"]
+	path = agent-zero-backup/workdir/browserpod
+	url = https://github.com/leaningtech/browserpod-meta.git
+[submodule "agent-zero-backup/workdir/domino-claude-plugin"]
+	path = agent-zero-backup/workdir/domino-claude-plugin
+	url = https://github.com/dominodatalab/domino-claude-plugin.git
+[submodule "agent-zero-backup/workdir/lunel"]
+	path = agent-zero-backup/workdir/lunel
+	url = https://github.com/lunel-dev/lunel.git
+[submodule "agent-zero-backup/workdir/openclaude"]
+	path = agent-zero-backup/workdir/openclaude
+	url = https://github.com/Gitlawb/openclaude.git
+[submodule "agent-zero-backup/workdir/sentient"]
+	path = agent-zero-backup/workdir/sentient
+	url = https://github.com/ToXMon/sentient.git
+[submodule "agent-zero-backup/workdir/tolu-cowork/pi-mono"]
+	path = agent-zero-backup/workdir/tolu-cowork/pi-mono
+	url = https://github.com/badlogic/pi-mono.git
+[submodule "agent-zero-backup/workdir/tolu-cowork/tolu-cowork-core"]
+	path = agent-zero-backup/workdir/tolu-cowork/tolu-cowork-core
+	url = https://github.com/ToXMon/tolu-cowork.git
+[submodule "agent-zero-backup/workdir/tolu-portfolio-rewrite"]
+	path = agent-zero-backup/workdir/tolu-portfolio-rewrite
+	url = https://github.com/ToXMon/tolu-portfolio.git
