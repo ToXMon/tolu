@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tier & Performance Management — BRQC Data Strategy</title>
+
+    <!-- JNJ JJIM Fonts: Outfit (heading fallback) + Nunito Sans (body fallback) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           JNJ JJIM BRAND TOKENS
+           Preset #13 — Johnson & Johnson Internal
+           =========================================== */
+        :root {
+            /* Primary brand */
+            --jj-red: #EB1700;
+            --jj-black: #000000;
+            --jj-white: #FFFFFF;
+            --jj-bg-light: #F1EFED;
+
+            /* Warm grays */
+            --jj-gray-warm: #C4BDB6;
+            --jj-gray-mid: #D5CFC9;
+            --jj-gray-tone: #A39992;
+            --jj-brown: #6E6159;
+
+            /* Data visualization (fixed order) */
+            --jj-chart-1: #EB1700;
+            --jj-chart-2: #000000;
+            --jj-chart-3: #C4BDB6;
+            --jj-chart-4: #004686;
+            --jj-chart-5: #68D2FF;
+            --jj-chart-6: #541981;
+
+            /* Typography */
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Nunito Sans', sans-serif;
+
+            /* Sizing — clamp for viewport fit */
+            --title-size: clamp(1.6rem, 4.5vw, 3.2rem);
+            --h2-size: clamp(1.2rem, 3vw, 2.2rem);
+            --h3-size: clamp(1rem, 2.2vw, 1.5rem);
+            --body-size: clamp(0.8rem, 1.4vw, 1.1rem);
+            --small-size: clamp(0.7rem, 1vw, 0.9rem);
+            --caption-size: clamp(0.6rem, 0.9vw, 0.8rem);
+
+            /* Spacing */
+            --slide-padding: clamp(2rem, 5vw, 5rem);
+            --content-gap: clamp(0.6rem, 2vw, 1.8rem);
+            --element-gap: clamp(0.3rem, 1vw, 0.8rem);
+
+            /* Animation — professional, subtle */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.4s;
+            --stagger: 0.08s;
+        }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        .card, .container, .content-box {
+            max-width: min(90vw, 1100px);
+            max-height: min(80vh, 700px);
+        }
+
+        .feature-list, .bullet-list {
+            gap: clamp(0.4rem, 1vh, 1rem);
+        }
+
+        .feature-list li, .bullet-list li {
+            font-size: var(--body-size);
+            line-height: 1.5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        img, .image-container {
+            max-width: 100%;
+            max-height: min(50vh, 400px);
+            object-fit: contain;
+        }
+
+        /* ===========================================
+           BASE RESET & GLOBALS
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--jj-black);
+            background: var(--jj-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--jj-black);
+            text-align: left;
+            line-height: 1.15;
+        }
+
+        h1 { font-size: var(--title-size); font-weight: 700; }
+        h2 { font-size: var(--h2-size); font-weight: 700; }
+        h3 { font-size: var(--h3-size); font-weight: 600; }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--jj-red);
+            z-index: 1000;
+            transition: width 0.15s ease;
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1.5vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--jj-gray-warm);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--jj-red);
+            transform: scale(1.4);
+        }
+
+        /* ===========================================
+           SLIDE NUMBER
+           =========================================== */
+        .slide-number {
+            position: absolute;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            right: clamp(0.5rem, 2vw, 2.5rem);
+            font-family: var(--font-heading);
+            font-size: var(--caption-size);
+            color: var(--jj-gray-tone);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           FOOTER
+           =========================================== */
+        .slide-footer {
+            position: absolute;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            left: var(--slide-padding);
+            font-size: var(--caption-size);
+            color: var(--jj-gray-tone);
+        }
+
+        /* ===========================================
+           RED ACCENT BAR
+           =========================================== */
+        .red-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--jj-red);
+        }
+
+        .red-bar-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--jj-red);
+        }
+
+        /* ===========================================
+           ANIMATIONS — Professional, subtle
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .reveal:nth-child(3) { transition-delay: 0.19s; }
+        .reveal:nth-child(4) { transition-delay: 0.26s; }
+        .reveal:nth-child(5) { transition-delay: 0.33s; }
+        .reveal:nth-child(6) { transition-delay: 0.40s; }
+        .reveal:nth-child(7) { transition-delay: 0.47s; }
+        .reveal:nth-child(8) { transition-delay: 0.54s; }
+
+        /* ===========================================
+           SLIDE 0: TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            background: var(--jj-white);
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--slide-padding);
+        }
+
+        .title-slide .red-accent {
+            width: clamp(40px, 5vw, 80px);
+            height: 4px;
+            background: var(--jj-red);
+            margin-bottom: clamp(0.8rem, 2vw, 1.5rem);
+        }
+
+        .title-slide h1 {
+            max-width: 85%;
+            margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .title-slide h1 span {
+            color: var(--jj-red);
+        }
+
+        .title-slide .subtitle {
+            font-family: var(--font-body);
+            font-size: var(--h3-size);
+            color: var(--jj-brown);
+            font-weight: 400;
+            max-width: 70%;
+            margin-bottom: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .title-slide .meta {
+            font-size: var(--caption-size);
+            color: var(--jj-gray-tone);
+        }
+
+        /* ===========================================
+           CONTENT SLIDES
+           =========================================== */
+        .content-slide {
+            background: var(--jj-white);
+        }
+
+        .content-slide .slide-content {
+            padding-top: clamp(2rem, 4vw, 3.5rem);
+            padding-bottom: clamp(2rem, 4vw, 3.5rem);
+            padding-left: calc(var(--slide-padding) + 20px);
+            padding-right: var(--slide-padding);
+        }
+
+        .content-slide h2 {
+            margin-bottom: clamp(0.3rem, 1vw, 0.6rem);
+        }
+
+        .content-slide h2 span {
+            color: var(--jj-red);
+        }
+
+        .content-slide .headline-support {
+            font-size: var(--body-size);
+            color: var(--jj-brown);
+            font-weight: 500;
+            margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            max-width: 80%;
+            border-left: 3px solid var(--jj-red);
+            padding-left: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .content-slide ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.4rem, 1.2vw, 0.9rem);
+        }
+
+        .content-slide ul li {
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            position: relative;
+        }
+
+        .content-slide ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            background: var(--jj-red);
+            border-radius: 1px;
+        }
+
+        .content-slide .callout {
+            background: var(--jj-bg-light);
+            border-left: 3px solid var(--jj-gray-warm);
+            padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.8rem, 2vw, 1.5rem);
+            margin-top: clamp(0.4rem, 1.5vw, 1rem);
+            font-size: var(--small-size);
+            color: var(--jj-brown);
+        }
+
+        .content-slide .callout strong {
+            color: var(--jj-black);
+        }
+
+        /* ===========================================
+           TABLE SLIDES
+           =========================================== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: clamp(0.5rem, 1.5vw, 1.2rem);
+            font-size: var(--body-size);
+        }
+
+        .data-table thead th {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--jj-white);
+            background: var(--jj-red);
+            padding: clamp(0.4rem, 1vw, 0.8rem) clamp(0.5rem, 1.5vw, 1.2rem);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: clamp(0.4rem, 1vw, 0.75rem) clamp(0.5rem, 1.5vw, 1.2rem);
+            border-bottom: 1px solid var(--jj-gray-mid);
+            vertical-align: top;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: var(--jj-bg-light);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: 2px solid var(--jj-red);
+        }
+
+        /* ===========================================
+           CLOSING SLIDE
+           =========================================== */
+        .closing-slide {
+            background: var(--jj-white);
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--slide-padding);
+        }
+
+        .closing-slide .closing-card {
+            background: var(--jj-bg-light);
+            border-top: 4px solid var(--jj-red);
+            padding: clamp(1.5rem, 3vw, 3rem);
+            max-width: min(85vw, 900px);
+        }
+
+        .closing-slide .closing-card h2 {
+            margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .closing-slide .closing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: clamp(0.8rem, 2vw, 1.5rem);
+        }
+
+        .closing-slide .closing-card ul li {
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            position: relative;
+            margin-bottom: clamp(0.3rem, 1vw, 0.6rem);
+        }
+
+        .closing-slide .closing-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            background: var(--jj-red);
+            border-radius: 1px;
+        }
+
+        .closing-slide .closing-statement {
+            font-family: var(--font-heading);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            color: var(--jj-red);
+            border-left: 3px solid var(--jj-black);
+            padding-left: clamp(0.5rem, 1vw, 1rem);
+            line-height: 1.4;
+        }
+
+        /* ===========================================
+           SECTION HEADER SLIDE
+           =========================================== */
+        .section-slide {
+            background: var(--jj-red);
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--slide-padding);
+        }
+
+        .section-slide h1 {
+            color: var(--jj-white);
+            max-width: 85%;
+        }
+
+        .section-slide .section-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: var(--h3-size);
+            font-weight: 400;
+            margin-top: clamp(0.5rem, 1vw, 0.8rem);
+            max-width: 70%;
+        }
+
+        .section-slide .section-number {
+            position: absolute;
+            top: clamp(1rem, 3vw, 2.5rem);
+            right: clamp(1.5rem, 4vw, 4rem);
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: rgba(255,255,255,0.15);
+            line-height: 1;
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.3rem, 4vw, 2.5rem);
+                --h2-size: clamp(1rem, 3vw, 1.75rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.8rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 3.5vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.6rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.2rem, 7vw, 2.5rem);
+            }
+            .grid { grid-template-columns: 1fr; }
+            .nav-dots { right: 4px; }
+            .nav-dot { width: 6px; height: 6px; }
+            .section-slide .section-number { display: none; }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- ===========================================
+         SLIDE 0: TITLE
+         =========================================== -->
+    <section class="slide title-slide" data-title="Title">
+        <div class="red-accent reveal"></div>
+        <h1 class="reveal">Tier & Performance Management</h1>
+        <p class="subtitle reveal">Operationalizing BRQC's Data Strategy at the Point of Decision</p>
+        <p class="meta reveal">BRQC Data Strategy — Internal Use Only</p>
+        <span class="slide-number">01</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 1: WHY — THE NARRATIVE ANCHOR
+         =========================================== -->
+    <section class="slide content-slide" data-title="Why">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Why Tier & Performance Management is a <span>BRQC</span> Data Strategy Use Case</h2>
+            <p class="headline-support reveal">Tier & Performance Management operationalizes BRQC's data strategy at the point of decision</p>
+            <ul>
+                <li class="reveal">BRQC's Operational Data Strategy exists to shift from tactical reporting to meaningful, actionable decision-making</li>
+                <li class="reveal">Tier systems are the daily, weekly, and monthly decision forums where this strategy must materialize</li>
+                <li class="reveal">Your work demonstrates how data maturity becomes operational behavior, not just architecture</li>
+            </ul>
+            <div class="callout reveal">
+                <strong>Why this lands:</strong> This directly reflects BRQC's stated aspiration to transform ways of working and improve data maturity through operating models, not dashboards alone.
+            </div>
+        </div>
+        <span class="slide-number">02</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 2: THREE LEVELS OF DESIGN (TABLE)
+         =========================================== -->
+    <section class="slide content-slide" data-title="Levels of Design">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Tier Management Mapped to <span>BRQC</span> Levels of Design</h2>
+            <p class="headline-support reveal">BRQC data strategy repeatedly reinforces three levels of design — Tier is not Level 3 work alone</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>BRQC Level of Design</th>
+                        <th>Your Tier & DOT Work</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Conceptual</strong></td>
+                        <td>7 Business Optimizations as the evaluative lens</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Behavioral</strong></td>
+                        <td>DOT matrix defining what to minimize / maximize / eliminate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Execution</strong></td>
+                        <td>Tier 1–3 boards, escalation logic, decision queues</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout reveal">
+                <strong>Key message:</strong> Tier succeeds only when Levels 1 and 2 are designed intentionally. This aligns with BRQC training content warning against jumping to tools before governance and behavioral design are clear.
+            </div>
+        </div>
+        <span class="slide-number">03</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 3: DOT MATRIX = LEVEL 2
+         =========================================== -->
+    <section class="slide content-slide" data-title="DOT Matrix">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">The DOT Matrix = <span>BRQC</span> Level 2 (Metrics Building)</h2>
+            <p class="headline-support reveal">BRQC defines Level 2 as metrics building — the DOT matrix is this artifact</p>
+            <ul>
+                <li class="reveal">Uses <strong>7 Business Optimizations</strong> as the taxonomy for value</li>
+                <li class="reveal">Uses <strong>6 Data Processes</strong> to structure the lifecycle of each metric</li>
+                <li class="reveal">Forces every Tier metric to justify: which optimization it serves, which data process it relies on, and what decision it enables</li>
+            </ul>
+            <div class="callout reveal">
+                <strong>Verbatim:</strong> "The DOT matrix prevents metric sprawl by requiring explicit value justification." This is exactly how BRQC describes optimizations — as an evaluation lens, not a list of KPIs.
+            </div>
+        </div>
+        <span class="slide-number">04</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 4: METRIC DESIGN PRINCIPLES
+         =========================================== -->
+    <section class="slide content-slide" data-title="Metric Design">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">How Tier Metrics Are Designed (<span>BRQC</span>-Aligned)</h2>
+            <p class="headline-support reveal">Metrics written as decision signals, not activity reports</p>
+            <ul>
+                <li class="reveal">Metrics are written as <strong>objectives to minimize, maximize, or eliminate</strong></li>
+                <li class="reveal">Metrics describe <strong>decision signals</strong>, not activities</li>
+                <li class="reveal"><strong>Persistence and aggregation</strong> matter more than point values</li>
+            </ul>
+            <div class="callout reveal">
+                <strong>BRQC alignment:</strong> This mirrors BRQC's emphasis on observable behaviors over outcome slogans (e.g., "reduce NCs" is not a metric). Supports BRQC's stance on avoiding Goodhart's Law in quality metrics.
+            </div>
+        </div>
+        <span class="slide-number">05</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 5: DIGITAL TRANSFORMATION STAGES (TABLE)
+         =========================================== -->
+    <section class="slide content-slide" data-title="Digital Transformation">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Tier as Stage 2 of <span>BRQC</span> Digital Transformation</h2>
+            <p class="headline-support reveal">Tier is how BRQC builds internal efficiency before advanced analytics</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>BRQC Transformation Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tier 1</strong></td>
+                        <td>Data-aware execution — signal capture</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 2</strong></td>
+                        <td>Diagnostic reasoning & constraint removal</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tier 3</strong></td>
+                        <td>Prescriptive, portfolio-level decisions</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout reveal">
+                <strong>Key message:</strong> This mirrors BRQC's explicit framing of Tier and performance systems as diagnostic and prescriptive asks, not predictive by default.
+            </div>
+        </div>
+        <span class="slide-number">06</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 6: OTHER BRQC ELEMENTS
+         =========================================== -->
+    <section class="slide content-slide" data-title="Strategy Elements">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Other <span>BRQC</span> Strategy Elements Reflected in TierPulse</h2>
+            <p class="headline-support reveal">Explicit alignment with broader BRQC strategy domains</p>
+            <ul>
+                <li class="reveal"><strong>Data Integrity Risks</strong> — missing, incorrect, imprecise, irrelevant data surfaced through Tier escalation</li>
+                <li class="reveal"><strong>Anti-fragility</strong> — Tier escalation logic surfaces weak signals early</li>
+                <li class="reveal"><strong>Change management</strong> — Tier is a behavioral system, not just reporting</li>
+                <li class="reveal"><strong>Cross-unit comparability</strong> — DOT matrix enables horizontal comparison across sites and functions</li>
+            </ul>
+        </div>
+        <span class="slide-number">07</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 7: CLOSING — WHY THIS MATTERS
+         =========================================== -->
+    <section class="slide closing-slide" data-title="Closing">
+        <div class="red-bar-top"></div>
+        <div class="closing-card">
+            <h2 class="reveal">Why This Matters to <span style="color: var(--jj-red);">BRQC</span></h2>
+            <ul>
+                <li class="reveal">Your Tier & DOT work demonstrates <strong>BRQC's data strategy in execution</strong></li>
+                <li class="reveal">It translates data theory into <strong>operational behavior</strong></li>
+                <li class="reveal">It provides a <strong>repeatable pattern</strong> for other BRQC domains</li>
+            </ul>
+            <p class="closing-statement reveal">This work shows how BRQC's data strategy becomes real at the point where decisions are made.</p>
+        </div>
+        <span class="slide-number">08</span>
+    </section>
+
+    <!-- ===========================================
+         PRESENTATION CONTROLLER
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.isScrolling = false;
+                this.progressBar = document.getElementById('progressBar');
+                this.navDotsContainer = document.getElementById('navDots');
+
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.setupNavDots();
+                this.updateProgress();
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = idx;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+                        e.preventDefault();
+                        this.goToSlide(this.currentSlide + 1);
+                    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                        e.preventDefault();
+                        this.goToSlide(this.currentSlide - 1);
+                    } else if (e.key === 'Home') {
+                        e.preventDefault();
+                        this.goToSlide(0);
+                    } else if (e.key === 'End') {
+                        e.preventDefault();
+                        this.goToSlide(this.slides.length - 1);
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let startY = 0;
+                document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    const diff = startY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.goToSlide(this.currentSlide + 1);
+                        else this.goToSlide(this.currentSlide - 1);
+                    }
+                }, { passive: true });
+            }
+
+            setupWheelNav() {
+                let lastWheel = 0;
+                document.addEventListener('wheel', (e) => {
+                    const now = Date.now();
+                    if (now - lastWheel < 800) return;
+                    lastWheel = now;
+                    if (e.deltaY > 30) this.goToSlide(this.currentSlide + 1);
+                    else if (e.deltaY < -30) this.goToSlide(this.currentSlide - 1);
+                }, { passive: true });
+            }
+
+            setupNavDots() {
+                this.navDotsContainer.innerHTML = '';
+                this.slides.forEach((slide, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ': ' + (slide.dataset.title || ''));
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navDotsContainer.appendChild(dot);
+                });
+            }
+
+            updateNavDots() {
+                const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === this.currentSlide);
+                });
+            }
+
+            updateProgress() {
+                const pct = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = pct + '%';
+            }
+
+            goToSlide(index) {
+                if (index < 0 || index >= this.slides.length) return;
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                this.currentSlide = index;
+                this.updateProgress();
+                this.updateNavDots();
+            }
+        }
+
+        new SlidePresentation();
+    </script>
+</body>
+</html>

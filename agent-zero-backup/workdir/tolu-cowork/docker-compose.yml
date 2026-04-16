@@ -1,0 +1,160 @@
+# Tolu Cowork — Docker Compose
+# Production-ready deployment with security isolation
+
+services:
+  # ─── Core Agent Service ────────────────────────────────────────────────────
+  tolu-core:
+    build:
+      context: ./tolu-cowork-core
+      dockerfile: Dockerfile
+    container_name: tolu-core
+    restart: unless-stopped
+    ports:
+      - "${TOLU_PORT:-50051}:50051"   # gRPC
+      - "${TOLU_WS_PORT:-8080}:8080"   # WebSocket
+    environment:
+      # Provider configuration
+      - TOLU_API_KEY=${TOLU_API_KEY:?TOLU_API_KEY is required}
+      - TOLU_BASE_URL=${TOLU_BASE_URL:-https://api.openai.com/v1}
+      - TOLU_MODEL=${TOLU_MODEL:-gpt-4o}
+      # Security
+      - TOLU_ENCRYPTION_KEY=${TOLU_ENCRYPTION_KEY:-}
+      - TOLU_LOG_LEVEL=${TOLU_LOG_LEVEL:-info}
+      # Sandbox
+      - TOLU_SANDBOX_LEVEL=${TOLU_SANDBOX_LEVEL:-path-only}
+      # TLS (optional)
+      - TOLU_TLS_CERT=${TOLU_TLS_CERT:-}
+      - TOLU_TLS_KEY=${TOLU_TLS_KEY:-}
+    volumes:
+      # Workspace access (read-write)
+      - ${TOLU_WORKSPACE:-./workspace}:/workspace:rw
+      # Persistent config and data
+      - tolu-data:/home/tolu/.tolu
+      # Skills directory (read-only)
+      - ./skills:/skills:ro
+    networks:
+      - tolu-internal
+      - tolu-external
+    depends_on:
+      redis:
+        condition: service_healthy
+        required: false
+      postgres:
+        condition: service_healthy
+        required: false
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8080/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=100M
+
+  # ─── Redis — Session Caching ───────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: tolu-redis
+    restart: unless-stopped
+    ports:
+      - "${TOLU_REDIS_PORT:-6379}:6379"
+    command: >
+      redis-server
+      --requirepass ${TOLU_REDIS_PASSWORD:-tolu-dev-change-me}
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfsync everysec
+    volumes:
+      - redis-data:/data
+    networks:
+      - tolu-internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${TOLU_REDIS_PASSWORD:-tolu-dev-change-me}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  # ─── PostgreSQL — Persistent Project Storage ───────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: tolu-postgres
+    restart: unless-stopped
+    ports:
+      - "${TOLU_PG_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: tolu_cowork
+      POSTGRES_USER: tolu
+      POSTGRES_PASSWORD: ${TOLU_PG_PASSWORD:-tolu-dev-change-me}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - tolu-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tolu -d tolu_cowork"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  # ─── Sandbox Container — Docker-in-Docker for Tool Isolation ───────────────
+  sandbox:
+    image: ubuntu:22.04
+    container_name: tolu-sandbox
+    restart: unless-stopped
+    command: ["sleep", "infinity"]
+    working_dir: /workspace
+    volumes:
+      - ${TOLU_WORKSPACE:-./workspace}:/workspace:rw
+    networks:
+      - tolu-internal
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+          pids: 100
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=50M
+      - /home:size=50M
+
+# ─── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  tolu-data:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+# ─── Networks ──────────────────────────────────────────────────────────────────
+networks:
+  tolu-internal:
+    driver: bridge
+    internal: true  # No external access
+  tolu-external:
+    driver: bridge

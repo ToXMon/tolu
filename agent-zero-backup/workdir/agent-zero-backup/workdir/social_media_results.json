@@ -1,0 +1,728 @@
+{
+  "target_phone": "+17328740910",
+  "scan_timestamp": "2026-04-09T12:35:49.241845Z",
+  "phone_formats_checked": [
+    "+17328740910",
+    "732-874-0910",
+    "732.874.0910",
+    "(732) 874-0910",
+    "7328740910",
+    "17328740910"
+  ],
+  "names_checked": [
+    "Catalino B Cheng",
+    "Catalino Cheng",
+    "Walter J Kellert",
+    "Deeksha",
+    "Susheel",
+    "Venna"
+  ],
+  "platforms": {
+    "whatsapp": {
+      "platform": "WhatsApp",
+      "checks": [
+        {
+          "url": "https://wa.me/17328740910",
+          "status_code": 302,
+          "redirect_location": "https://api.whatsapp.com/send/?phone=17328740910&text&type=phone_number&app_absent=0",
+          "note": "wa.me redirects to WhatsApp Web if number is valid WhatsApp account"
+        },
+        {
+          "url": "https://wa.me/7328740910",
+          "status_code": 302,
+          "redirect_location": "https://api.whatsapp.com/send/?phone=7328740910&text&type=phone_number&app_absent=0",
+          "note": "wa.me redirects to WhatsApp Web if number is valid WhatsApp account"
+        },
+        {
+          "url": "https://api.whatsapp.com/send/?phone=17328740910",
+          "status_code": 200,
+          "redirect": ""
+        }
+      ],
+      "registered": true,
+      "confidence": "HIGH",
+      "summary": "Number +17328740910 appears to be registered on WhatsApp (wa.me redirect confirms)"
+    },
+    "telegram": {
+      "platform": "Telegram",
+      "checks": [
+        {
+          "url": "https://t.me/+%2B17328740910",
+          "status_code": 200,
+          "redirect": ""
+        },
+        {
+          "url": "https://t.me/+7328740910",
+          "status_code": 200,
+          "redirect": ""
+        },
+        {
+          "url": "https://t.me/+17328740910",
+          "status_code": 200,
+          "redirect": ""
+        }
+      ],
+      "api_accessible": true,
+      "username_checks": [
+        {
+          "username": "venna",
+          "url": "https://t.me/venna",
+          "title": "Telegram: View @venna",
+          "description": "You can view and join @venna right away.",
+          "possible_match": true
+        }
+      ],
+      "summary": "Found 1 potential Telegram profiles via username patterns"
+    },
+    "facebook": {
+      "platform": "Facebook",
+      "checks": [
+        {
+          "url": "https://www.facebook.com/7328740910",
+          "status_code": 200,
+          "redirect": ""
+        },
+        {
+          "url": "https://www.facebook.com/17328740910",
+          "status_code": 200,
+          "redirect": ""
+        },
+        {
+          "url": "https://www.facebook.com/login/identify/",
+          "status_code": 200,
+          "note": "Recovery page accessible; phone submission requires JavaScript/CSRF token"
+        }
+      ],
+      "name_searches": [],
+      "recovery_page_accessible": true,
+      "summary": "Facebook requires authentication for detailed search; public endpoints redirect to login",
+      "limitations": "Most Facebook searches require authenticated session; scraping is blocked by login wall"
+    },
+    "twitter": {
+      "platform": "Twitter/X",
+      "checks": [
+        {
+          "query": "+17328740910",
+          "url": "https://twitter.com/search?q=%2B17328740910&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=%2B17328740910&f=user"
+        },
+        {
+          "query": "(732) 874-0910",
+          "url": "https://twitter.com/search?q=%28732%29%20874-0910&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=%28732%29%20874-0910&f=user"
+        },
+        {
+          "query": "732-874-0910",
+          "url": "https://twitter.com/search?q=732-874-0910&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=732-874-0910&f=user"
+        },
+        {
+          "query": "7328740910",
+          "url": "https://twitter.com/search?q=7328740910&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=7328740910&f=user"
+        },
+        {
+          "query": "Catalino B Cheng Edison, NJ",
+          "url": "https://twitter.com/search?q=Catalino%20B%20Cheng%20Edison%2C%20NJ&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Catalino%20B%20Cheng%20Edison%2C%20NJ&f=user"
+        },
+        {
+          "query": "Catalino Cheng Edison, NJ",
+          "url": "https://twitter.com/search?q=Catalino%20Cheng%20Edison%2C%20NJ&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Catalino%20Cheng%20Edison%2C%20NJ&f=user"
+        },
+        {
+          "query": "Walter J Kellert Edison, NJ",
+          "url": "https://twitter.com/search?q=Walter%20J%20Kellert%20Edison%2C%20NJ&f=user",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Walter%20J%20Kellert%20Edison%2C%20NJ&f=user"
+        },
+        {
+          "query": "+17328740910",
+          "url": "https://x.com/search?q=%2B17328740910&f=user",
+          "status_code": 200
+        },
+        {
+          "query": "7328740910",
+          "url": "https://x.com/search?q=7328740910&f=user",
+          "status_code": 200
+        }
+      ],
+      "username_checks": [],
+      "summary": "Twitter/X requires authentication for user search; username pattern checks performed"
+    },
+    "instagram": {
+      "platform": "Instagram",
+      "checks": [],
+      "username_checks": [
+        {
+          "username": "walterkellert",
+          "url": "https://www.instagram.com/walterkellert/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "catalino_cheng",
+          "url": "https://www.instagram.com/catalino_cheng/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "catalinobcheng",
+          "url": "https://www.instagram.com/catalinobcheng/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "deeksha",
+          "url": "https://www.instagram.com/deeksha/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "catalino.cheng",
+          "url": "https://www.instagram.com/catalino.cheng/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "catalinocheng",
+          "url": "https://www.instagram.com/catalinocheng/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "walter_kellert",
+          "url": "https://www.instagram.com/walter_kellert/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "walterjkellert",
+          "url": "https://www.instagram.com/walterjkellert/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "venna",
+          "url": "https://www.instagram.com/venna/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "ccheng",
+          "url": "https://www.instagram.com/ccheng/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "wkellert",
+          "url": "https://www.instagram.com/wkellert/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "walter.kellert",
+          "url": "https://www.instagram.com/walter.kellert/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        },
+        {
+          "username": "susheel",
+          "url": "https://www.instagram.com/susheel/",
+          "status_code": 200,
+          "data": {},
+          "possible_match": true
+        }
+      ],
+      "summary": "Found 13 potential Instagram profiles"
+    },
+    "linkedin": {
+      "platform": "LinkedIn",
+      "checks": [
+        {
+          "name": "Catalino B Cheng",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Catalino%20B%20Cheng&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Catalino Cheng",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Catalino%20Cheng&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Walter J Kellert",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Walter%20J%20Kellert&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Deeksha",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Deeksha&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Susheel",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Susheel&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Venna",
+          "url": "https://www.linkedin.com/pub/dir?firstName=&lastName=Venna&trk=people-guest_people-search-bar_search-submit",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "api_url": "https://www.linkedin.com/sales/gig/profile/lookup?firstName=Catalino&lastName=Cheng",
+          "status_code": 200
+        }
+      ],
+      "summary": "LinkedIn requires authentication; public profile checks attempted for name-based URLs"
+    },
+    "tiktok": {
+      "platform": "TikTok",
+      "checks": [],
+      "username_checks": [],
+      "login_page_accessible": true,
+      "summary": "No TikTok profiles found for name-based username patterns"
+    },
+    "snapchat": {
+      "platform": "Snapchat",
+      "checks": [],
+      "username_checks": [
+        {
+          "username": "deeksha",
+          "url": "https://www.snapchat.com/add/deeksha",
+          "status_code": 200,
+          "data": {
+            "title": "Deeksha Bhabhi (@deeksha) | Snapchat Stories, Spotlight & Lenses",
+            "og_title": "Deeksha Bhabhi on Snapchat"
+          },
+          "possible_match": true
+        },
+        {
+          "username": "venna",
+          "url": "https://www.snapchat.com/add/venna",
+          "status_code": 200,
+          "data": {
+            "title": "Vennela\ud83d\udc51 (@venna) | Snapchat Stories, Spotlight & Lenses",
+            "og_title": "Vennela\ud83d\udc51 on Snapchat"
+          },
+          "possible_match": true
+        },
+        {
+          "username": "ccheng",
+          "url": "https://www.snapchat.com/add/ccheng",
+          "status_code": 200,
+          "data": {
+            "title": "Caleb (@ccheng) | Snapchat Stories, Spotlight & Lenses",
+            "og_title": "Caleb on Snapchat"
+          },
+          "possible_match": true
+        },
+        {
+          "username": "wkellert",
+          "url": "https://www.snapchat.com/add/wkellert",
+          "status_code": 200,
+          "data": {
+            "title": "(@wkellert) | Snapchat Stories, Spotlight & Lenses",
+            "og_title": " on Snapchat"
+          },
+          "possible_match": true
+        },
+        {
+          "username": "susheel",
+          "url": "https://www.snapchat.com/add/susheel",
+          "status_code": 200,
+          "data": {
+            "title": "Susheel Sharma (@susheel) | Snapchat Stories, Spotlight & Lenses",
+            "og_title": "Susheel Sharma on Snapchat"
+          },
+          "possible_match": true
+        }
+      ],
+      "phone_api_accessible": true,
+      "summary": "Found 5 potential Snapchat profiles"
+    },
+    "signal": {
+      "platform": "Signal",
+      "checks": [
+        {
+          "url": "https://signal.org/",
+          "status_code": 200
+        },
+        {
+          "url": "https://updates.signal.org/",
+          "status_code": 200
+        },
+        {
+          "url": "https://signal.me/#p/17328740910",
+          "status_code": 200
+        },
+        {
+          "url": "https://signal.me/#p/+17328740910",
+          "status_code": 200,
+          "note": "Signal.me link accessible (all numbers get a link, doesn't confirm registration)"
+        }
+      ],
+      "summary": "Signal does not publicly expose registration status; signal.me links exist for all phone numbers",
+      "limitations": "Signal's privacy-first design prevents external registration checks"
+    },
+    "google": {
+      "platform": "Google/Gmail",
+      "checks": [
+        {
+          "email": "venna@gmail.com",
+          "recovery_url": "https://accounts.google.com/signin/v2/usernamelookup",
+          "note": "Google account recovery requires JavaScript; cannot verify existence via scraping alone"
+        },
+        {
+          "email": "walterjkellert@gmail.com",
+          "recovery_url": "https://accounts.google.com/signin/v2/usernamelookup",
+          "note": "Google account recovery requires JavaScript; cannot verify existence via scraping alone"
+        },
+        {
+          "email": "catalinocheng@gmail.com",
+          "recovery_url": "https://accounts.google.com/signin/v2/usernamelookup",
+          "note": "Google account recovery requires JavaScript; cannot verify existence via scraping alone"
+        },
+        {
+          "email": "catalino_cheng@gmail.com",
+          "recovery_url": "https://accounts.google.com/signin/v2/usernamelookup",
+          "note": "Google account recovery requires JavaScript; cannot verify existence via scraping alone"
+        },
+        {
+          "email": "walterkellert@gmail.com",
+          "recovery_url": "https://accounts.google.com/signin/v2/usernamelookup",
+          "note": "Google account recovery requires JavaScript; cannot verify existence via scraping alone"
+        }
+      ],
+      "email_patterns_checked": [
+        "venna@gmail.com",
+        "walterjkellert@gmail.com",
+        "catalinocheng@gmail.com",
+        "catalino_cheng@gmail.com",
+        "walterkellert@gmail.com",
+        "ccheng@gmail.com",
+        "walterkellert732@gmail.com",
+        "walterkellert874@gmail.com",
+        "deeksha@gmail.com",
+        "walter.kellert@gmail.com",
+        "catalinocheng874@gmail.com",
+        "walter_kellert@gmail.com",
+        "wkellert@gmail.com",
+        "catalino.cheng@gmail.com",
+        "susheel@gmail.com",
+        "catalinocheng732@gmail.com",
+        "catalinobcheng@gmail.com"
+      ],
+      "voice_page_accessible": true,
+      "summary": "Google account existence cannot be verified via scraping; recovery requires JS",
+      "limitations": "Google uses robust anti-scraping measures; account enumeration is prevented"
+    },
+    "discord": {
+      "platform": "Discord",
+      "checks": [
+        {
+          "url": "https://discord.com/",
+          "status_code": 200
+        }
+      ],
+      "summary": "Discord does not expose phone-number linked accounts; API requires auth token",
+      "limitations": "Discord phone verification is internal; no public phone-to-user mapping"
+    },
+    "github": {
+      "platform": "GitHub",
+      "checks": [],
+      "username_checks": [
+        {
+          "username": "deeksha",
+          "url": "https://github.com/deeksha",
+          "name": null,
+          "bio": null,
+          "location": null,
+          "company": null,
+          "public_repos": 0,
+          "followers": 1,
+          "created_at": "2011-05-01T22:45:44Z",
+          "possible_match": true
+        },
+        {
+          "username": "venna",
+          "url": "https://github.com/venna",
+          "name": null,
+          "bio": null,
+          "location": null,
+          "company": null,
+          "public_repos": 0,
+          "followers": 0,
+          "created_at": "2013-06-11T16:22:49Z",
+          "possible_match": true
+        },
+        {
+          "username": "ccheng",
+          "url": "https://github.com/ccheng",
+          "name": "C Cheng",
+          "bio": null,
+          "location": "Canada",
+          "company": null,
+          "public_repos": 9,
+          "followers": 1,
+          "created_at": "2010-11-10T19:22:07Z",
+          "possible_match": true
+        },
+        {
+          "username": "susheel",
+          "url": "https://github.com/susheel",
+          "name": "Susheel Varma",
+          "bio": "Scientist | Architect | Engineer | Author\r\n\r\nChief Data Officer @Sage-Bionetworks \r\n\r\nPrev Head of AI & DS @ico-org | CTO @HDRUK ",
+          "location": "Cambridge",
+          "company": "Sage Bionetworks",
+          "public_repos": 41,
+          "followers": 48,
+          "created_at": "2009-10-19T07:57:03Z",
+          "possible_match": true
+        }
+      ],
+      "summary": "Found 4 GitHub profiles"
+    },
+    "pinterest": {
+      "platform": "Pinterest",
+      "checks": [],
+      "summary": "No Pinterest profiles found"
+    },
+    "reddit": {
+      "platform": "Reddit",
+      "checks": [],
+      "summary": "No Reddit profiles found"
+    },
+    "youtube": {
+      "platform": "YouTube",
+      "checks": [
+        {
+          "search_name": "Catalino B Cheng",
+          "url": "https://www.youtube.com/results?search_query=Catalino%20B%20Cheng",
+          "status_code": 200,
+          "note": "YouTube search requires JS for results; page fetched but channel data in JS bundle"
+        },
+        {
+          "search_name": "Catalino Cheng",
+          "url": "https://www.youtube.com/results?search_query=Catalino%20Cheng",
+          "status_code": 200,
+          "note": "YouTube search requires JS for results; page fetched but channel data in JS bundle"
+        },
+        {
+          "search_name": "Walter J Kellert",
+          "url": "https://www.youtube.com/results?search_query=Walter%20J%20Kellert",
+          "status_code": 200,
+          "note": "YouTube search requires JS for results; page fetched but channel data in JS bundle"
+        }
+      ],
+      "summary": "YouTube search requires JavaScript; limited scraping possible"
+    },
+    "aboutme": {
+      "platform": "About.me",
+      "checks": [
+        {
+          "username": "deeksha",
+          "url": "https://about.me/deeksha",
+          "possible_match": true
+        },
+        {
+          "username": "venna",
+          "url": "https://about.me/venna",
+          "possible_match": true
+        }
+      ],
+      "summary": "Found 2 potential About.me profiles"
+    },
+    "skype": {
+      "platform": "Skype",
+      "checks": [],
+      "summary": "Skype contact search requires authenticated API access"
+    },
+    "gravatar": {
+      "platform": "Gravatar",
+      "checks": [],
+      "summary": "No Gravatar profiles found for guessed email patterns"
+    },
+    "phone_exposure": {
+      "platform": "Phone Number Exposure",
+      "checks": [
+        {
+          "url": "https://www.unmask.com/phone/17328740910",
+          "status_code": 200,
+          "data_snippet": "+\ufffd\ufffd\u0010QU\ufffd\ufffdF$g\ufffd\u001e\u0000\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffds\ufffd\ufffd\ufffd}\ufffd\ufffd?_\ufffdu2\ufffd\ufffd-\u0016\ufffd\ufffd\ufffdz\ufffd\ufffdK\u000e\ufffd\ufffd\u0405@\u0003I\ufffds\ufffd_K\ufffd?]\ufffdt\u0003\ufffd\ufffdU\u0016;\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdh\ufffd\ufffdF\ufffd\ufffd\ufffd\t\ufffd\ufffd\ufffd\ufffd%_\ufffd\u0004p&l5g[N\ufffd\ufffd(\u0002|\ufffd\u0003\ufffd]\u0005Z\u0001\ufffdW\u0003\"\ufffdx\u0005&\ufffd\ufffd\ufffd\ufffd\ufffdU\ufffd\ufffdA\ufffd\ufffd\ufffd\u0444,m\ufffd4aC\ufffd\u0000\u001b\ufffd\ufffd\u0650\ufffd\ufffd\ufffd\u0014\t,\ufffdr\ufffd\u0000-5`\u0006\u0000\u001a`=\ufffd,\ufffd\ufffdt\"\ufffd\r)\ufffd\ufffdH\ufffd\ufffd\ufffdOf\u0010\ufffd&\ufffd$\ufffd\ufffd\ufffdUW\ufffd\u0559D\u0011Q\u0011\u00110{\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdW\ufffd\u0018$E\u0012\ufffd\ufffdEz\u001d\ufffd1X\ufffd\ufffd\ufffd\ufffd\fl\ufffd\ufffd.\ufffd\ufffdC\ufffd\ufffd\ufffd1#\ufffd|`\ufffdw9\u0012cx\ufffd\b\u0018\u0003{`\ufffd\ufffd|th>\ufffd^\ufffd\ufffd\ufffd\t\ufffd\u0014\ufffd\ufffd-\ufffd\u0010z\ufffd@\u0012\t>=\u0190\ufffdGr\ufffd\ufffd9\ufffd$\ufffd\ufffd\fMg\u0011\"$\ufffd)_Gff",
+          "names_found": []
+        },
+        {
+          "url": "https://www.sync.me/search/?phone=17328740910",
+          "status_code": 200,
+          "data_snippet": "Find out who called - Sync.me Home Features Spam Detector Support Contact Us Privacy Terms of Use Sign in EN English Russian Hebrew Italian Turkish Germany Brazilian Portuguese Arabic French Hindi Portuguese Spanish EN Features Spam Detector Support More Apps Calendar.AI Livecaller EN English Russia",
+          "names_found": []
+        },
+        {
+          "url": "https://www.shouldianswer.com/phone-number/17328740910",
+          "status_code": 200,
+          "data_snippet": "\ufffd/DQM\ufffd\u0001P\ufffd\fs\ufffd\ufffd\ufffd\u06bfg\ufffd\ufffd\ufffd\ufffd\u0515\ufffd\u0001)\ufffd\ufffdAKY\ufffd\ufffd\ufffdH\ufffdcO\ufffd\ufffd\u0003\u0012\ufffd$l\u0010\ufffd\u0002\ufffd%\ufffd\ufffd\ufffd\ufffdj\u079d;\ufffdJ\ufffd\u0639+2\ufffdB\ufffdnx\ufffd\u0007\ufffd\u0002$X\ufffd\ufffd\u0000C\ufffd\ufffd8c\ufffd\ufffd}\u000f\ufffd\ufffd\u001f8\r\u0000\ufffd\ufffdx7\u0000\ufffd)\ufffd\u0003B\ufffd]\ufffd(S\u000e)T\ufffdt\ufffd\ufffd\u04b8u\u05f8\ufffd2\ufffd\ufffd; XD0V{l\ufffd\ufffdj\\\u0761QM\ufffd\ufffds\u00e4t1\ufffd>\ufffd\ufffd\u0000\ufffd$\ufffd&\u01d6-\ufffdY\u001aB\u0012\ufffd>~\ufffd\ufffd\u0017E<\ufffd\u076b$J$\ufffd\ufffd\ufffd\u007fmn\u0632\u06a0\ufffd\b\u0014\ufffdM<&\ufffdX\ufffd\u001c\ufffd\ufffdbjgeC\ufffd>\ufffd$\ufffd\ufffd\ufffdj\u0013\ufffd9\n\ufffd\u0005\ufffdk\ufffd\ufffd}\u0012S2\b%\ufffdq8\ufffdo\u0000+\ufffd\ufffd\u0006w\u000f\ufffd\ufffdQ\ufffdU+:\ufffd\ufffdW\u0018d\u0513p\u0017\ufffd\u0019\f\ufffd\u0014\ufffd\ufffd2[\ufffd\ufffd\ufffd\ufffd\ufffd<\ufffdZH\ufffdNXG\u0318\ufffda\ufffd\ufffd\u0012+\ufffd\u0003u!r}v\ufffdH\ufffd\ufffd\ufffd\u007fAG\u9d6d\ufffd\u0003\ufffd\u0011GY\ufffd\ufffd\ufffd",
+          "names_found": []
+        },
+        {
+          "url": "https://www.whocalled.us/lookup/17328740910",
+          "status_code": 200,
+          "data_snippet": "Search - Whocalld Whocalld \ud83c\uddfa\ud83c\uddf8 United States: +1 732-874-0910 \ud83c\udde6\ud83c\uddf9 Austria: +43 1 7328740910 \ud83c\udde8\ud83c\uddf3 China: +86 173 2874 0910 \ud83c\uddf7\ud83c\uddf8 Serbia: +381 17 328740910",
+          "names_found": []
+        },
+        {
+          "url": "https://numverify.com/",
+          "status_code": 200,
+          "data_snippet": "\ufffd\ufffdA\ufffdHM\ufffd\u0001\ufffd\b\u001d>\ufffd}\ufffdi\ufffd\u07d3\ufffd/\u0012\ufffdF\ufffdJl\u048e\ufffd&TJ<^\ufffdxI&v\ufffd;\u0010\ufffd\ufffd\ufffd\ufffd\ufffdEMR\ufffd-\u000b\ufffd\ufffd[\ufffd\ufffd\ufffd|\u0007\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdA\ufffd$|\ufffd\ufffd_\ufffd\ufffd\ufffd\u0004\ufffd4A\u0003\n@\"8\ufffd\ufffd\ufffd=t\ufffd\ufffd\ufffd%7 \u06cd\ufffd\u0007B\u0013\ufffdF\ufffdB\ufffdc\u0017 \ufffdJ\u00ec#\u0018)\ufffdv'\ufffd\u001ew\ufffd\ufffd\ufffd\ufffd\u00001\ufffd\ufffd=\ufffd#\ufffdR\u001fk\ufffd\ufffd\ufffdU\u0006N4l\ufffd\ufffd\ufffdI~\ufffdT\u0011\u0002B\ufffd%\ufffd~m\ufffd\ufffd\ufffd\ufffdkM\ufffd\ufffdUP\u0018\ufffd\\\ufffd\ufffdw\u07d5\u0001\ufffdl\ufffd\ufffd\ufffd\ufffd\ufffdv\u001a\ufffd\r\ufffd\ufffd\ufffdT\u0001\ufffd,\ufffd\u0012\u07f3\ufffdw\ufffd\ufffd\u0015\ufffd\ufffdo5?\u029ba\ufffdZ\u001f}\ufffdUtr\ufffd\ufffd1Z\ufffd\u001b\ufffd?M\ufffd|_\ufffd}B\ufffd\u000bw\ufffd\u000e'l\ufffd\ufffd\u02fdl\u0015\ufffd\ufffdV\ufffd \ufffd\ufffd^\ufffd*9\ufffd\ufffdZ\\\ufffd\ufffd\ufffdK\ufffd>\u077e\ufffd\ufffdy\ufffd\ufffdF\u007f\ufffd\ufffd9?\ufffd\ufffdOW\u000bl\ufffd\ufffd\u0018\ufffd\ufffdf\u001ed\ufffd\u0010h\ufffd=9i}",
+          "names_found": []
+        }
+      ],
+      "summary": "Checked 5 phone directory sites"
+    },
+    "name_social_search": {
+      "platform": "Name-Based Social Search",
+      "searches": [
+        {
+          "name": "Catalino B Cheng",
+          "url": "https://twitter.com/search?q=Catalino%20B%20Cheng%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Catalino%20B%20Cheng%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Catalino B Cheng",
+          "url": "https://www.linkedin.com/pub/dir?firstName=catalino&lastName=cheng",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Catalino Cheng",
+          "url": "https://twitter.com/search?q=Catalino%20Cheng%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Catalino%20Cheng%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Catalino Cheng",
+          "url": "https://www.linkedin.com/pub/dir?firstName=catalino&lastName=cheng",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Walter J Kellert",
+          "url": "https://twitter.com/search?q=Walter%20J%20Kellert%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Walter%20J%20Kellert%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Walter J Kellert",
+          "url": "https://www.linkedin.com/pub/dir?firstName=walter&lastName=kellert",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Deeksha",
+          "url": "https://twitter.com/search?q=Deeksha%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Deeksha%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Deeksha",
+          "url": "https://www.linkedin.com/pub/dir?firstName=deeksha&lastName=",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Susheel",
+          "url": "https://twitter.com/search?q=Susheel%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Susheel%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Susheel",
+          "url": "https://www.linkedin.com/pub/dir?firstName=susheel&lastName=",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        },
+        {
+          "name": "Venna",
+          "url": "https://twitter.com/search?q=Venna%20Edison%20NJ&f=user",
+          "platform": "Twitter",
+          "status_code": 301,
+          "redirect": "https://x.com/search?q=Venna%20Edison%20NJ&f=user"
+        },
+        {
+          "name": "Venna",
+          "url": "https://www.linkedin.com/pub/dir?firstName=venna&lastName=",
+          "platform": "LinkedIn",
+          "status_code": 999,
+          "redirect": ""
+        }
+      ],
+      "summary": "Performed 12 name-based social platform searches"
+    }
+  },
+  "summary": {
+    "platforms_checked": 20,
+    "findings": [
+      {
+        "platform": "telegram",
+        "details": "Found 1 potential Telegram profiles via username patterns",
+        "positive_hits": 1
+      },
+      {
+        "platform": "instagram",
+        "details": "Found 13 potential Instagram profiles",
+        "positive_hits": 13
+      },
+      {
+        "platform": "snapchat",
+        "details": "Found 5 potential Snapchat profiles",
+        "positive_hits": 5
+      },
+      {
+        "platform": "github",
+        "details": "Found 4 GitHub profiles",
+        "positive_hits": 4
+      },
+      {
+        "platform": "aboutme",
+        "details": "Found 2 potential About.me profiles",
+        "positive_hits": 2
+      }
+    ]
+  }
+}

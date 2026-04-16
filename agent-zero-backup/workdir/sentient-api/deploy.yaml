@@ -1,0 +1,53 @@
+version: "2.0"
+
+services:
+  sentient-api:
+    image: sentient-api:1.1.0
+    env:
+      # Secrets MUST be set at deploy time via Akash CLI or provider.
+      # Never commit real values here. Use: akash deployment create deploy.yaml
+      - "ADMIN_API_KEY=$ADMIN_API_KEY"
+      - "IP_HASH_SALT=$IP_HASH_SALT"
+      # Optional: enable dev CORS (set to "true" for local dev only)
+      # - "ENABLE_DEV_CORS=false"
+      # Optional: enable Swagger docs (set to "true" for staging only)
+      # - "ENABLE_DOCS=false"
+    expose:
+      - port: 8000
+        as: 80
+        to:
+          - global: true
+    params:
+      storage:
+        api-data:
+          mount: /data
+          readOnly: false
+
+profiles:
+  compute:
+    sentient-api:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 512Mi
+        storage:
+          - name: default
+            size: 1Gi
+          - name: api-data
+            size: 2Gi
+            attributes:
+              persistent: true
+              class: beta2
+  placement:
+    dcloud:
+      pricing:
+        sentient-api:
+          denom: uact
+          amount: 1000
+
+deployment:
+  sentient-api:
+    dcloud:
+      profile: sentient-api
+      count: 1

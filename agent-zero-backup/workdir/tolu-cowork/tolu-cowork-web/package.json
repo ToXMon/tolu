@@ -1,0 +1,24 @@
+{
+  "name": "@tolu/cowork-web",
+  "version": "0.1.0",
+  "description": "BrowserPod web components for Tolu Cowork",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lit": "^3.1.0"
+  },
+  "peerDependencies": {
+    "@leaningtech/browserpod": "^2.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vite": "^6.0.0"
+  },
+  "license": "MIT"
+}

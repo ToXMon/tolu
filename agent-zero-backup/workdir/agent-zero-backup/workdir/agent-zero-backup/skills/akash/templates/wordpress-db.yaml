@@ -1,0 +1,90 @@
+version: "2.0"
+
+services:
+  wordpress:
+    image: wordpress:6.4
+    env:
+      - "WORDPRESS_DB_HOST=db"
+      - "WORDPRESS_DB_USER=wordpress"
+      - "WORDPRESS_DB_PASSWORD=wordpress_password"
+      - "WORDPRESS_DB_NAME=wordpress"
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - global: true
+    params:
+      storage:
+        wordpress-data:
+          mount: /var/www/html
+          readOnly: false
+
+  db:
+    image: mariadb:10.11
+    env:
+      - "MYSQL_ROOT_PASSWORD=root_password"
+      - "MYSQL_DATABASE=wordpress"
+      - "MYSQL_USER=wordpress"
+      - "MYSQL_PASSWORD=wordpress_password"
+    expose:
+      - port: 3306
+        to:
+          - service: wordpress
+    params:
+      storage:
+        db-data:
+          mount: /var/lib/mysql
+          readOnly: false
+
+profiles:
+  compute:
+    wordpress:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          - name: default
+            size: 1Gi
+          - name: wordpress-data
+            size: 10Gi
+            attributes:
+              persistent: true
+              class: beta2
+
+    db:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          - name: default
+            size: 1Gi
+          - name: db-data
+            size: 20Gi
+            attributes:
+              persistent: true
+              class: beta2
+
+  placement:
+    dcloud:
+      pricing:
+        wordpress:
+          denom: uact
+          amount: 2000
+        db:
+          denom: uact
+          amount: 3000
+
+deployment:
+  wordpress:
+    dcloud:
+      profile: wordpress
+      count: 1
+
+  db:
+    dcloud:
+      profile: db
+      count: 1

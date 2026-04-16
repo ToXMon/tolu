@@ -1,0 +1,22 @@
+[
+  {
+    "repo": "ToXMon/sentient",
+    "branch": "main",
+    "fork": false,
+    "account": "ToXMon",
+    "sample_commits": [
+      "e3e3ed9a",
+      "5d1a2083",
+      "8e618068"
+    ]
+  },
+  {
+    "repo": "ToXMon/tolu-portfolio",
+    "branch": "main",
+    "fork": false,
+    "account": "ToXMon",
+    "sample_commits": [
+      "c4ff00f4"
+    ]
+  }
+]

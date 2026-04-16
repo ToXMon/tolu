@@ -1,0 +1,16 @@
+{
+  "topic": "learning",
+  "discovered": "2026-04-11",
+  "connections": [
+    {
+      "wing": "README.md",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "learning",
+      "hall": "",
+      "file": "README.md"
+    }
+  ]
+}

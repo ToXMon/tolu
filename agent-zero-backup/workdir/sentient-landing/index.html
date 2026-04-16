@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentient — The AI That Actually Knows How You Feel</title>
+    <meta name="description" content="Sentient is an emotionally intelligent AI companion that understands your feelings through multimodal sensing, on-device privacy, and emotional pattern recognition.">
+
+    <!-- Fonts: Clash Display + Satoshi from Fontshare -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+             CSS CUSTOM PROPERTIES — SENTIENT BRAND
+             =========================================== */
+        :root {
+            /* Core palette */
+            --bg-void: #06060b;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+
+            /* Warm emotional accent */
+            --accent-coral: #ff6b35;
+            --accent-amber: #f7931e;
+            --accent-rose: #e84393;
+            --accent-rose-light: #fd79a8;
+            --gradient-warm: linear-gradient(135deg, #ff6b35, #f7931e);
+            --gradient-rose: linear-gradient(135deg, #e84393, #fd79a8);
+            --gradient-emotional: linear-gradient(135deg, #ff6b35, #e84393, #667eea);
+
+            /* Cool trust accent */
+            --accent-blue: #667eea;
+            --accent-purple: #764ba2;
+            --gradient-trust: linear-gradient(135deg, #667eea, #764ba2);
+
+            /* Glow effects */
+            --glow-coral: rgba(255, 107, 53, 0.3);
+            --glow-rose: rgba(232, 67, 147, 0.25);
+            --glow-blue: rgba(102, 126, 234, 0.2);
+            --glow-purple: rgba(118, 75, 162, 0.3);
+
+            /* Text */
+            --text-primary: #f5f5f7;
+            --text-secondary: #9898a6;
+            --text-muted: #5a5a6e;
+
+            /* Typography */
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+            --title-size: clamp(2.2rem, 6vw, 5rem);
+            --h2-size: clamp(1.6rem, 4vw, 3.2rem);
+            --h3-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            --body-size: clamp(0.85rem, 1.4vw, 1.1rem);
+            --small-size: clamp(0.7rem, 1vw, 0.85rem);
+            --label-size: clamp(0.65rem, 0.9vw, 0.8rem);
+
+            /* Spacing */
+            --slide-padding: clamp(1.5rem, 5vw, 5rem);
+            --content-gap: clamp(1rem, 2.5vw, 2.5rem);
+            --element-gap: clamp(0.5rem, 1.2vw, 1.2rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-normal: 0.7s;
+            --duration-fast: 0.4s;
+            --duration-slow: 1.2s;
+
+            /* Radius */
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-xl: 32px;
+            --radius-full: 9999px;
+        }
+
+        /* ===========================================
+             RESET + BASE
+             =========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            background: var(--bg-void);
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--bg-void);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===========================================
+             SLIDE BASE (viewport-base.css adapted)
+             =========================================== */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===========================================
+             REVEAL ANIMATIONS
+             =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.88);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .reveal-blur {
+            opacity: 0;
+            filter: blur(12px);
+            transition: opacity 0.9s var(--ease-out-expo),
+                        filter 0.9s var(--ease-out-expo);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal,
+        .slide.visible .reveal-scale,
+        .slide.visible .reveal-blur,
+        .slide.visible .reveal-left,
+        .slide.visible .reveal-right {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* Stagger children */
+        .reveal:nth-child(1), .reveal-scale:nth-child(1), .reveal-blur:nth-child(1) { transition-delay: 0.08s; }
+        .reveal:nth-child(2), .reveal-scale:nth-child(2), .reveal-blur:nth-child(2) { transition-delay: 0.18s; }
+        .reveal:nth-child(3), .reveal-scale:nth-child(3), .reveal-blur:nth-child(3) { transition-delay: 0.28s; }
+        .reveal:nth-child(4), .reveal-scale:nth-child(4), .reveal-blur:nth-child(4) { transition-delay: 0.38s; }
+        .reveal:nth-child(5), .reveal-scale:nth-child(5), .reveal-blur:nth-child(5) { transition-delay: 0.48s; }
+        .reveal:nth-child(6), .reveal-scale:nth-child(6), .reveal-blur:nth-child(6) { transition-delay: 0.58s; }
+        .reveal:nth-child(7) { transition-delay: 0.68s; }
+        .reveal:nth-child(8) { transition-delay: 0.78s; }
+
+        /* ===========================================
+             BACKGROUND EFFECTS
+             =========================================== */
+
+        /* Atmospheric gradient mesh */
+        .gradient-mesh {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            will-change: transform;
+        }
+
+        /* Noise texture overlay */
+        .noise-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
+        }
+
+        /* ===========================================
+             NAVIGATION
+             =========================================== */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: clamp(0.8rem, 2vw, 1.5rem) clamp(1rem, 4vw, 3rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s, backdrop-filter 0.4s;
+        }
+
+        .nav-bar.scrolled {
+            background: rgba(6, 6, 11, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-cta {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: var(--small-size);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.55em 1.5em;
+            border-radius: var(--radius-full);
+            background: var(--gradient-warm);
+            transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+            box-shadow: 0 2px 20px var(--glow-coral);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 30px var(--glow-coral);
+        }
+
+        /* Nav dots */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.8rem, 2vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            cursor: pointer;
+            transition: all 0.4s var(--ease-out-expo);
+            border: none;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-coral);
+            box-shadow: 0 0 12px var(--glow-coral);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.2);
+        }
+
+        /* ===========================================
+             SECTION 1: HERO
+             =========================================== */
+        .hero-slide {
+            background: var(--bg-void);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+            padding: 0 var(--slide-padding);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 107, 53, 0.08);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            font-size: var(--label-size);
+            font-weight: 500;
+            color: var(--accent-coral);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: var(--content-gap);
+        }
+
+        .hero-badge .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-coral);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--glow-coral); }
+            50% { opacity: 0.5; box-shadow: 0 0 12px var(--glow-coral); }
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: var(--content-gap);
+        }
+
+        .hero-title .gradient-text {
+            background: var(--gradient-emotional);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.35rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto var(--content-gap);
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 36px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-warm);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+            box-shadow: 0 4px 25px var(--glow-coral);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 8px 40px rgba(255, 107, 53, 0.45);
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 36px;
+            border-radius: var(--radius-full);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: clamp(1.5rem, 3vh, 3rem);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.5;
+            animation: float-hint 3s ease-in-out infinite;
+        }
+
+        .scroll-hint span {
+            font-size: var(--label-size);
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .scroll-hint .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 1.5px solid var(--text-muted);
+            border-bottom: 1.5px solid var(--text-muted);
+            transform: rotate(45deg);
+        }
+
+        @keyframes float-hint {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===========================================
+             SECTION 2: PROBLEM
+             =========================================== */
+        .problem-slide {
+            background: var(--bg-primary);
+        }
+
+        .problem-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 70%, rgba(118, 75, 162, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 30%, rgba(232, 67, 147, 0.08) 0%, transparent 55%),
+                var(--bg-primary);
+        }
+
+        .problem-content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .problem-label {
+            font-size: var(--label-size);
+            font-weight: 500;
+            color: var(--accent-rose);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: var(--element-gap);
+        }
+
+        .problem-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 4.5vw, 3.2rem);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--content-gap);
+        }
+
+        .problem-title .highlight {
+            color: var(--accent-coral);
+            position: relative;
+        }
+
+        .problem-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-warm);
+            opacity: 0.5;
+        }
+
+        .problem-stats {
+            display: flex;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--content-gap);
+        }
+
+        .problem-stat {
+            text-align: center;
+        }
+
+        .problem-stat .number {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: var(--gradient-rose);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .problem-stat .label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===========================================
+             SECTION 3: FEATURES
+             =========================================== */
+        .features-slide {
+            background: var(--bg-void);
+        }
+
+        .features-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(255, 107, 53, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(102, 126, 234, 0.06) 0%, transparent 50%),
+                var(--bg-void);
+        }
+
+        .features-content {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: clamp(1.5rem, 3vh, 3rem);
+        }
+
+        .section-label {
+            font-size: var(--label-size);
+            font-weight: 500;
+            color: var(--accent-coral);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: var(--element-gap);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.8rem, 1.5vw, 1.2rem);
+        }
+
+        .feature-card {
+            background: rgba(22, 22, 31, 0.6);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: var(--radius-lg);
+            padding: clamp(1.2rem, 2vw, 2rem);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+            cursor: default;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-warm);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            background: rgba(28, 28, 40, 0.8);
+            border-color: rgba(255,255,255,0.08);
+            transform: translateY(-4px);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: var(--element-gap);
+        }
+
+        .feature-card:nth-child(1) .feature-icon { background: rgba(255, 107, 53, 0.12); }
+        .feature-card:nth-child(2) .feature-icon { background: rgba(102, 126, 234, 0.12); }
+        .feature-card:nth-child(3) .feature-icon { background: rgba(232, 67, 147, 0.12); }
+        .feature-card:nth-child(4) .feature-icon { background: rgba(118, 75, 162, 0.12); }
+        .feature-card:nth-child(5) .feature-icon { background: rgba(247, 147, 30, 0.12); }
+        .feature-card:nth-child(6) .feature-icon { background: rgba(102, 126, 234, 0.12); }
+
+        .feature-name {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* ===========================================
+             SECTION 4: HOW IT WORKS
+             =========================================== */
+        .howto-slide {
+            background: var(--bg-primary);
+        }
+
+        .howto-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 80%, rgba(247, 147, 30, 0.06) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+
+        .howto-content {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .steps-row {
+            display: flex;
+            gap: clamp(1rem, 3vw, 2.5rem);
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .step-item {
+            flex: 1;
+            text-align: center;
+            max-width: 280px;
+            position: relative;
+        }
+
+        .step-number {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 700;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.7;
+            line-height: 1;
+            margin-bottom: var(--element-gap);
+        }
+
+        .step-icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 107, 53, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--element-gap);
+            font-size: 24px;
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .step-name {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 80px;
+            right: -20%;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,107,53,0.3), rgba(102,126,234,0.3));
+        }
+
+        .step-item:last-child .step-connector { display: none; }
+
+        /* ===========================================
+             SECTION 5: EMOTIONAL DNA PREVIEW
+             =========================================== */
+        .dna-slide {
+            background: var(--bg-void);
+        }
+
+        .dna-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 40% 50%, rgba(232, 67, 147, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 50%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+                var(--bg-void);
+        }
+
+        .dna-content {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 5vw, 4rem);
+            align-items: center;
+        }
+
+        .dna-text { }
+
+        .dna-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dna-ring-container {
+            position: relative;
+            width: clamp(220px, 30vw, 360px);
+            height: clamp(220px, 30vw, 360px);
+        }
+
+        .dna-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+
+        .dna-ring:nth-child(1) {
+            border-top-color: var(--accent-coral);
+            border-right-color: rgba(255, 107, 53, 0.3);
+            animation: spin-slow 8s linear infinite;
+            filter: drop-shadow(0 0 8px var(--glow-coral));
+        }
+
+        .dna-ring:nth-child(2) {
+            inset: 15%;
+            border-bottom-color: var(--accent-blue);
+            border-left-color: rgba(102, 126, 234, 0.3);
+            animation: spin-slow 6s linear infinite reverse;
+            filter: drop-shadow(0 0 8px var(--glow-blue));
+        }
+
+        .dna-ring:nth-child(3) {
+            inset: 30%;
+            border-top-color: var(--accent-rose);
+            border-left-color: rgba(232, 67, 147, 0.3);
+            animation: spin-slow 10s linear infinite;
+            filter: drop-shadow(0 0 6px var(--glow-rose));
+        }
+
+        .dna-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            height: 35%;
+            border-radius: 50%;
+            background: var(--gradient-emotional);
+            opacity: 0.8;
+            filter: blur(1px);
+            animation: pulse-core 4s ease-in-out infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-core {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        /* DNA data points floating around */
+        .dna-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: orbit-point 12s linear infinite;
+        }
+
+        .dna-point:nth-child(5) { background: var(--accent-coral); top: 5%; left: 45%; animation-delay: 0s; }
+        .dna-point:nth-child(6) { background: var(--accent-blue); top: 25%; right: 2%; animation-delay: -3s; }
+        .dna-point:nth-child(7) { background: var(--accent-rose); bottom: 10%; left: 15%; animation-delay: -6s; }
+        .dna-point:nth-child(8) { background: var(--accent-amber); bottom: 25%; right: 15%; animation-delay: -9s; }
+
+        @keyframes orbit-point {
+            0% { transform: scale(1); opacity: 0.8; }
+            25% { transform: scale(1.5); opacity: 1; }
+            50% { transform: scale(1); opacity: 0.6; }
+            75% { transform: scale(1.3); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .dna-features-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+            margin-top: var(--content-gap);
+        }
+
+        .dna-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+        }
+
+        .dna-feature-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===========================================
+             SECTION 6: PRIVACY
+             =========================================== */
+        .privacy-slide {
+            background: var(--bg-primary);
+        }
+
+        .privacy-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 60% 40%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+
+        .privacy-content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .shield-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--content-gap);
+            position: relative;
+        }
+
+        .shield-outer {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-lg);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            background: rgba(102, 126, 234, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shield-scan {
+            position: absolute;
+            top: -100%;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, rgba(102, 126, 234, 0.15), transparent);
+            animation: shield-scan 3s ease-in-out infinite;
+        }
+
+        @keyframes shield-scan {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: -100%; }
+        }
+
+        .privacy-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--content-gap);
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .privacy-badge .check {
+            color: #4ade80;
+        }
+
+        /* ===========================================
+             SECTION 7: WAITLIST CTA
+             =========================================== */
+        .waitlist-slide {
+            background: var(--bg-void);
+        }
+
+        .waitlist-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 70%, rgba(232, 67, 147, 0.08) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 30%, rgba(102, 126, 234, 0.06) 0%, transparent 40%),
+                var(--bg-void);
+        }
+
+        .waitlist-content {
+            max-width: 560px;
+            text-align: center;
+        }
+
+        .waitlist-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: var(--element-gap);
+        }
+
+        .waitlist-subtitle {
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--content-gap);
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .waitlist-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .waitlist-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .waitlist-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .waitlist-input:focus {
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .waitlist-submit {
+            padding: 14px 28px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-warm);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-spring);
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+        }
+
+        .waitlist-submit:hover:not(:disabled) {
+            transform: scale(1.04);
+            box-shadow: 0 4px 25px var(--glow-coral);
+        }
+
+        .waitlist-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .waitlist-submit .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin: 0 auto;
+        }
+
+        .waitlist-submit.loading .btn-text { display: none; }
+        .waitlist-submit.loading .spinner { display: block; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success state */
+        .waitlist-success {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--element-gap);
+            animation: fadeScaleIn 0.5s var(--ease-spring);
+        }
+
+        .waitlist-success.active {
+            display: flex;
+        }
+
+        @keyframes fadeScaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--gradient-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 30px var(--glow-coral);
+        }
+
+        .queue-position {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 600;
+        }
+
+        .queue-position span {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .share-cta {
+            margin-top: var(--element-gap);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .share-label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .share-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .share-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .error-msg {
+            color: #ff6b6b;
+            font-size: var(--small-size);
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-msg.active { display: block; }
+
+        /* Confetti canvas */
+        .confetti-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* ===========================================
+             SECTION 8: FOOTER
+             =========================================== */
+        .footer-slide {
+            background: var(--bg-void);
+            min-height: auto;
+            height: auto;
+            min-height: 40vh;
+            scroll-snap-align: start;
+        }
+
+        .footer-content {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: clamp(2rem, 5vh, 4rem) var(--slide-padding);
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin-bottom: var(--element-gap);
+        }
+
+        .footer-logo span {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-tagline {
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            margin-bottom: var(--content-gap);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: var(--content-gap);
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            font-size: var(--label-size);
+            color: var(--text-muted);
+            padding-top: var(--element-gap);
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        /* ===========================================
+             RESPONSIVE
+             =========================================== */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dna-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .dna-visual { order: -1; }
+
+            .steps-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step-connector { display: none; }
+
+            .waitlist-form {
+                flex-direction: column;
+            }
+
+            .nav-dots { display: none; }
+        }
+
+        @media (max-width: 500px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Short viewports */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.6rem, 1.5vw, 1.2rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.8rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.4rem, 1vw, 0.8rem);
+            }
+
+            .scroll-hint, .hero-badge { display: none; }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav-bar" id="navbar">
+        <a href="#" class="nav-logo">Sentient<span>.</span></a>
+        <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+    </nav>
+
+    <!-- Nav dots -->
+    <div class="nav-dots" id="navDots"></div>
+
+    <!-- Confetti canvas -->
+    <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+    <!-- ========== SECTION 1: HERO ========== -->
+    <section class="slide hero-slide" id="hero">
+        <canvas class="hero-canvas" id="heroCanvas"></canvas>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="hero-content">
+                <div class="hero-badge reveal">
+                    <span class="pulse-dot"></span>
+                    Coming Early 2026
+                </div>
+                <h1 class="hero-title reveal">
+                    The AI that actually<br><span class="gradient-text">knows how you feel.</span>
+                </h1>
+                <p class="hero-subtitle reveal">
+                    Sentient reads your emotional signals — voice, text, face, biometrics — to build an AI companion that truly understands your inner world.
+                </p>
+                <div class="hero-cta-group reveal">
+                    <a href="#waitlist" class="btn-primary">
+                        <span>✦</span> Get Early Access
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        <span>→</span> See How It Works
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 2: PROBLEM ========== -->
+    <section class="slide problem-slide" id="problem">
+        <div class="problem-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="problem-content">
+                <p class="problem-label reveal">The Problem</p>
+                <h2 class="problem-title reveal">
+                    Your phone knows your location.<br>
+                    Your watch knows your heart rate.<br>
+                    But nothing understands<br>how you <span class="highlight">feel</span>.
+                </h2>
+                <div class="problem-stats reveal">
+                    <div class="problem-stat">
+                        <div class="number" data-count="76">0%</div>
+                        <div class="label">of people can't accurately<br>describe their emotions</div>
+                    </div>
+                    <div class="problem-stat">
+                        <div class="number" data-count="3.4">0x</div>
+                        <div class="label">more data in voice tone<br>than words alone</div>
+                    </div>
+                    <div class="problem-stat">
+                        <div class="number" data-count="89">0%</div>
+                        <div class="label">want tech that understands<br>their emotional state</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 3: FEATURES ========== -->
+    <section class="slide features-slide" id="features">
+        <div class="features-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="features-content">
+                <div class="section-header">
+                    <p class="section-label reveal">Meet Sentient</p>
+                    <h2 class="section-title reveal">Emotional intelligence,<br>engineered.</h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">🧬</div>
+                        <div class="feature-name">Emotional DNA</div>
+                        <div class="feature-desc">A unique visual fingerprint of your emotional patterns — as personal as your actual DNA.</div>
+                    </div>
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">🔗</div>
+                        <div class="feature-name">EmotionSync</div>
+                        <div class="feature-desc">Compare emotional patterns with friends. Discover your emotional compatibility and shared rhythms.</div>
+                    </div>
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">🛡️</div>
+                        <div class="feature-name">On-Device Privacy</div>
+                        <div class="feature-desc">Raw biometric data never leaves your device. All processing happens locally. Your feelings stay yours.</div>
+                    </div>
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">🗄️</div>
+                        <div class="feature-name">Memory Cabinet</div>
+                        <div class="feature-desc">An AI that learns your emotional rhythm over time — remembering patterns, triggers, and growth.</div>
+                    </div>
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">🎭</div>
+                        <div class="feature-name">Multimodal Sensing</div>
+                        <div class="feature-desc">Voice tone, text sentiment, emoji usage, facial micro-expressions — all woven into one emotional picture.</div>
+                    </div>
+                    <div class="feature-card reveal-scale">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-name">Weekly Journey</div>
+                        <div class="feature-desc">Auto-generated shareable summaries of your emotional week — beautiful, insightful, and viral.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 4: HOW IT WORKS ========== -->
+    <section class="slide howto-slide" id="howto">
+        <div class="howto-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="howto-content">
+                <div class="section-header">
+                    <p class="section-label reveal">How It Works</p>
+                    <h2 class="section-title reveal">Three steps to<br>emotional clarity.</h2>
+                </div>
+                <div class="steps-row">
+                    <div class="step-item reveal">
+                        <div class="step-number">01</div>
+                        <div class="step-icon-circle">📲</div>
+                        <div class="step-name">Download</div>
+                        <div class="step-desc">Install Sentient and grant sensor permissions. Everything stays on your device.</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="step-item reveal">
+                        <div class="step-number">02</div>
+                        <div class="step-icon-circle">💭</div>
+                        <div class="step-name">Check In</div>
+                        <div class="step-desc">Quick emotional check-ins through voice, text, or just letting the sensors do their thing.</div>
+                        <div class="step-connector"></div>
+                    </div>
+                    <div class="step-item reveal">
+                        <div class="step-number">03</div>
+                        <div class="step-icon-circle">✨</div>
+                        <div class="step-name">Discover</div>
+                        <div class="step-desc">Watch your Emotional DNA form, uncover patterns, and share your journey with friends.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 5: EMOTIONAL DNA ========== -->
+    <section class="slide dna-slide" id="dna">
+        <div class="dna-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="dna-content">
+                <div class="dna-text">
+                    <p class="section-label reveal-left">Your Emotional Fingerprint</p>
+                    <h2 class="section-title reveal-left">No two people feel<br>the same way.</h2>
+                    <p class="reveal-left" style="color: var(--text-secondary); font-size: var(--body-size); line-height: 1.7; margin-top: var(--element-gap);">
+                        Your Emotional DNA is a living visualization that evolves as you do. It captures the unique blend of emotions, rhythms, and patterns that make you, you.
+                    </p>
+                    <div class="dna-features-list">
+                        <div class="dna-feature-item reveal-left">
+                            <span class="dot" style="background: var(--accent-coral);"></span>
+                            Dynamic rings that shift with your mood
+                        </div>
+                        <div class="dna-feature-item reveal-left">
+                            <span class="dot" style="background: var(--accent-blue);"></span>
+                            Color palettes unique to your emotional spectrum
+                        </div>
+                        <div class="dna-feature-item reveal-left">
+                            <span class="dot" style="background: var(--accent-rose);"></span>
+                            Shareable as a visual identity card
+                        </div>
+                    </div>
+                </div>
+                <div class="dna-visual reveal-right">
+                    <div class="dna-ring-container">
+                        <div class="dna-ring"></div>
+                        <div class="dna-ring"></div>
+                        <div class="dna-ring"></div>
+                        <div class="dna-core"></div>
+                        <div class="dna-point"></div>
+                        <div class="dna-point"></div>
+                        <div class="dna-point"></div>
+                        <div class="dna-point"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 6: PRIVACY ========== -->
+    <section class="slide privacy-slide" id="privacy">
+        <div class="privacy-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="privacy-content">
+                <div class="shield-icon reveal-scale">
+                    <div class="shield-outer">
+                        🔒
+                        <div class="shield-scan"></div>
+                    </div>
+                </div>
+                <p class="section-label reveal">Privacy First</p>
+                <h2 class="section-title reveal" style="margin-bottom: var(--element-gap);">
+                    Your feelings are yours.<br>We intend to keep it that way.
+                </h2>
+                <p class="reveal" style="color: var(--text-secondary); font-size: var(--body-size); line-height: 1.7; max-width: 500px; margin: 0 auto var(--content-gap);">
+                    All biometric processing happens on your device. Raw voice, face, and sensor data never leaves your phone. We collect minimal insights — only what you choose to share.
+                </p>
+                <div class="privacy-badges reveal">
+                    <div class="privacy-badge"><span class="check">✓</span> On-Device Processing</div>
+                    <div class="privacy-badge"><span class="check">✓</span> End-to-End Encrypted</div>
+                    <div class="privacy-badge"><span class="check">✓</span> Zero Raw Data Upload</div>
+                    <div class="privacy-badge"><span class="check">✓</span> GDPR Ready</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 7: WAITLIST ========== -->
+    <section class="slide waitlist-slide" id="waitlist">
+        <div class="waitlist-bg"></div>
+        <div class="noise-overlay"></div>
+        <div class="slide-content">
+            <div class="waitlist-content">
+                <h2 class="waitlist-title reveal">
+                    Ready to be<br><span class="gradient-text">understood?</span>
+                </h2>
+                <p class="waitlist-subtitle reveal">
+                    Join the waitlist for early access. Be among the first to discover your Emotional DNA.
+                </p>
+
+                <!-- Form state -->
+                <div class="waitlist-form-wrapper reveal" id="formWrapper">
+                    <form class="waitlist-form" id="waitlistForm" novalidate>
+                        <div class="waitlist-input-wrapper">
+                            <input
+                                type="email"
+                                class="waitlist-input"
+                                id="emailInput"
+                                placeholder="your@email.com"
+                                required
+                                autocomplete="email"
+                                aria-label="Email address"
+                            >
+                        </div>
+                        <button type="submit" class="waitlist-submit" id="submitBtn">
+                            <span class="btn-text">Join Waitlist</span>
+                            <div class="spinner"></div>
+                        </button>
+                    </form>
+                    <p class="error-msg" id="errorMsg"></p>
+                </div>
+
+                <!-- Success state -->
+                <div class="waitlist-success" id="successState">
+                    <div class="success-icon">✓</div>
+                    <p class="queue-position">You're <span>#<span id="queueNum">—</span></span> in line!</p>
+                    <p style="color: var(--text-secondary); font-size: var(--small-size);">We'll notify you when it's your turn.</p>
+                    <div class="share-cta">
+                        <p class="share-label">Share to move up the line ↓</p>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn" id="shareTwitter" title="Share on X" aria-label="Share on X">𝕏</a>
+                            <a href="#" class="share-btn" id="shareLinkedIn" title="Share on LinkedIn" aria-label="Share on LinkedIn">in</a>
+                            <a href="#" class="share-btn" id="shareCopy" title="Copy link" aria-label="Copy link">📋</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 8: FOOTER ========== -->
+    <footer class="slide footer-slide" id="footer">
+        <div class="slide-content">
+            <div class="footer-content">
+                <div class="footer-logo reveal">Sentient<span>.</span></div>
+                <p class="footer-tagline reveal">The AI that actually knows how you feel.</p>
+                <div class="footer-links reveal">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Careers</a>
+                </div>
+                <p class="footer-copy reveal">© 2026 Sentient AI. All rights reserved. Made with emotional intelligence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ===========================================
+             SLIDE PRESENTATION CONTROLLER
+             =========================================== */
+        class SlideController {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.navDotsContainer = document.getElementById('navDots');
+                this.navbar = document.getElementById('navbar');
+                this.currentSlide = 0;
+
+                this.setupIntersectionObserver();
+                this.setupNavDots();
+                this.setupScrollNavbar();
+                this.setupKeyboardNav();
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            if (idx !== -1) {
+                                this.currentSlide = idx;
+                                this.updateNavDots();
+                            }
+                        }
+                    });
+                }, { threshold: 0.35 });
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupNavDots() {
+                this.navDotsContainer.innerHTML = '';
+                this.slides.forEach((slide, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', `Go to section ${i + 1}`);
+                    dot.addEventListener('click', () => {
+                        slide.scrollIntoView({ behavior: 'smooth' });
+                    });
+                    this.navDotsContainer.appendChild(dot);
+                });
+                this.dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+            }
+
+            updateNavDots() {
+                if (!this.dots) return;
+                this.dots.forEach((d, i) => d.classList.toggle('active', i === this.currentSlide));
+            }
+
+            setupScrollNavbar() {
+                let ticking = false;
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            this.navbar.classList.toggle('scrolled', window.scrollY > 50);
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                });
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                        e.preventDefault();
+                        const next = Math.min(this.currentSlide + 1, this.slides.length - 1);
+                        this.slides[next].scrollIntoView({ behavior: 'smooth' });
+                    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                        e.preventDefault();
+                        const prev = Math.max(this.currentSlide - 1, 0);
+                        this.slides[prev].scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+        }
+
+        /* ===========================================
+             HERO CANVAS — EMOTIONAL WAVEFORM
+             =========================================== */
+        class EmotionalWaveform {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.time = 0;
+                this.waves = [
+                    { amplitude: 0.15, frequency: 0.8, speed: 0.015, color: 'rgba(255, 107, 53, 0.08)', yOffset: 0.5 },
+                    { amplitude: 0.12, frequency: 1.2, speed: 0.012, color: 'rgba(232, 67, 147, 0.06)', yOffset: 0.55 },
+                    { amplitude: 0.1, frequency: 0.6, speed: 0.018, color: 'rgba(102, 126, 234, 0.05)', yOffset: 0.45 },
+                    { amplitude: 0.08, frequency: 1.5, speed: 0.01, color: 'rgba(118, 75, 162, 0.04)', yOffset: 0.6 },
+                ];
+                this.orbs = [];
+                this.initOrbs();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.animate();
+            }
+
+            initOrbs() {
+                const colors = [
+                    'rgba(255, 107, 53, 0.12)',
+                    'rgba(232, 67, 147, 0.1)',
+                    'rgba(102, 126, 234, 0.08)',
+                    'rgba(247, 147, 30, 0.08)',
+                    'rgba(118, 75, 162, 0.06)',
+                ];
+                for (let i = 0; i < 5; i++) {
+                    this.orbs.push({
+                        x: Math.random(),
+                        y: Math.random(),
+                        r: 100 + Math.random() * 200,
+                        vx: (Math.random() - 0.5) * 0.0003,
+                        vy: (Math.random() - 0.5) * 0.0003,
+                        color: colors[i]
+                    });
+                }
+            }
+
+            resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                this.canvas.width = window.innerWidth * dpr;
+                this.canvas.height = window.innerHeight * dpr;
+                this.ctx.scale(dpr, dpr);
+                this.w = window.innerWidth;
+                this.h = window.innerHeight;
+            }
+
+            animate() {
+                this.time += 1;
+                const { ctx, w, h } = this;
+                ctx.clearRect(0, 0, w, h);
+
+                // Draw floating orbs
+                this.orbs.forEach(orb => {
+                    orb.x += orb.vx;
+                    orb.y += orb.vy;
+                    if (orb.x < -0.2 || orb.x > 1.2) orb.vx *= -1;
+                    if (orb.y < -0.2 || orb.y > 1.2) orb.vy *= -1;
+
+                    const gradient = ctx.createRadialGradient(
+                        orb.x * w, orb.y * h, 0,
+                        orb.x * w, orb.y * h, orb.r
+                    );
+                    gradient.addColorStop(0, orb.color);
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, w, h);
+                });
+
+                // Draw emotional waves
+                this.waves.forEach(wave => {
+                    ctx.beginPath();
+                    ctx.moveTo(0, h);
+                    for (let x = 0; x <= w; x += 3) {
+                        const normalX = x / w;
+                        const y = h * wave.yOffset +
+                            Math.sin(normalX * Math.PI * 2 * wave.frequency + this.time * wave.speed) * h * wave.amplitude +
+                            Math.sin(normalX * Math.PI * 4 * wave.frequency + this.time * wave.speed * 1.3) * h * wave.amplitude * 0.3;
+                        ctx.lineTo(x, y);
+                    }
+                    ctx.lineTo(w, h);
+                    ctx.closePath();
+                    ctx.fillStyle = wave.color;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        /* ===========================================
+             CONFETTI SYSTEM
+             =========================================== */
+        class ConfettiSystem {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.running = false;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            burst(x, y) {
+                const colors = ['#ff6b35', '#f7931e', '#e84393', '#fd79a8', '#667eea', '#764ba2', '#f5f5f7'];
+                for (let i = 0; i < 100; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 3 + Math.random() * 8;
+                    this.particles.push({
+                        x, y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - 3,
+                        size: 3 + Math.random() * 6,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        rotation: Math.random() * 360,
+                        rotSpeed: (Math.random() - 0.5) * 15,
+                        gravity: 0.12,
+                        opacity: 1,
+                        decay: 0.008 + Math.random() * 0.012
+                    });
+                }
+                if (!this.running) {
+                    this.running = true;
+                    this.animate();
+                }
+            }
+
+            animate() {
+                const { ctx, canvas, particles } = this;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.rotation += p.rotSpeed;
+                    p.opacity -= p.decay;
+                    p.vx *= 0.99;
+
+                    if (p.opacity <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.globalAlpha = p.opacity;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+                    ctx.restore();
+                }
+
+                if (particles.length > 0) {
+                    requestAnimationFrame(() => this.animate());
+                } else {
+                    this.running = false;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+        }
+
+        /* ===========================================
+             WAITLIST SYSTEM
+             =========================================== */
+        /* ===========================================
+             WAITLIST SYSTEM
+             =========================================== */
+        class WaitlistSystem {
+            constructor() {
+                this.form = document.getElementById('waitlistForm');
+                this.input = document.getElementById('emailInput');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.formWrapper = document.getElementById('formWrapper');
+                this.successState = document.getElementById('successState');
+                this.errorMsg = document.getElementById('errorMsg');
+                this.queueNum = document.getElementById('queueNum');
+                this.confetti = new ConfettiSystem(document.getElementById('confettiCanvas'));
+
+                // API endpoint — relative path proxied by here.now
+                this.apiEndpoint = '/api/waitlist';
+
+                // Check if already signed up
+                const stored = localStorage.getItem('sentient_waitlist');
+                if (stored) {
+                    try {
+                        const data = JSON.parse(stored);
+                        this.showSuccess(data.position, false);
+                    } catch(e) {}
+                }
+
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+                // Share buttons
+                document.getElementById('shareTwitter').addEventListener('click', (e) => this.shareTwitter(e));
+                document.getElementById('shareLinkedIn').addEventListener('click', (e) => this.shareLinkedIn(e));
+                document.getElementById('shareCopy').addEventListener('click', (e) => this.copyLink(e));
+            }
+
+            validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                const email = this.input.value.trim().toLowerCase();
+
+                // Validate
+                if (!this.validateEmail(email)) {
+                    this.showError('Please enter a valid email address.');
+                    return;
+                }
+
+                // Check duplicate in localStorage
+                const stored = localStorage.getItem('sentient_waitlist');
+                if (stored) {
+                    try {
+                        const data = JSON.parse(stored);
+                        if (data.email === email) {
+                            this.showError("You're already on the list!");
+                            return;
+                        }
+                    } catch(e) {}
+                }
+
+                // Loading state
+                this.submitBtn.classList.add('loading');
+                this.submitBtn.disabled = true;
+                this.clearError();
+
+                try {
+                    // POST to the waitlist API
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Store locally
+                        localStorage.setItem('sentient_waitlist', JSON.stringify({
+                            email,
+                            position: data.queue_position,
+                            timestamp: Date.now()
+                        }));
+
+                        this.showSuccess(data.queue_position, true);
+                    } else {
+                        this.showError(data.message || 'Something went wrong. Please try again.');
+                        this.submitBtn.classList.remove('loading');
+                        this.submitBtn.disabled = false;
+                    }
+                } catch (err) {
+                    console.error('Waitlist API error:', err);
+                    this.showError('Network error. Please check your connection and try again.');
+                    this.submitBtn.classList.remove('loading');
+                    this.submitBtn.disabled = false;
+                }
+            }
+
+            showSuccess(position, animate) {
+                this.formWrapper.style.display = 'none';
+                this.successState.classList.add('active');
+                this.queueNum.textContent = position;
+
+                if (animate) {
+                    // Confetti burst
+                    const rect = this.successState.getBoundingClientRect();
+                    this.confetti.burst(
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 3
+                    );
+                }
+            }
+
+            showError(msg) {
+                this.errorMsg.textContent = msg;
+                this.errorMsg.classList.add('active');
+            }
+
+            clearError() {
+                this.errorMsg.classList.remove('active');
+                this.errorMsg.textContent = '';
+            }
+
+            shareTwitter(e) {
+                e.preventDefault();
+                const pos = this.queueNum.textContent;
+                const text = encodeURIComponent(`I just joined the Sentient waitlist! 🧬 I'm #${pos} in line for the AI that actually knows how you feel. Join me → `);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+            }
+
+            shareLinkedIn(e) {
+                e.preventDefault();
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+            }
+
+            async copyLink(e) {
+                e.preventDefault();
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    const btn = e.currentTarget;
+                    const original = btn.textContent;
+                    btn.textContent = '✓';
+                    setTimeout(() => btn.textContent = original, 2000);
+                } catch(err) {
+                    // Fallback
+                    const input = document.createElement('input');
+                    input.value = window.location.href;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                }
+            }
+        }
+
+        /* ===========================================
+             COUNTER ANIMATION
+             =========================================== */
+        class CounterAnimator {
+            constructor() {
+                this.counters = document.querySelectorAll('[data-count]');
+                this.animated = new Set();
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !this.animated.has(entry.target)) {
+                            this.animated.add(entry.target);
+                            this.animate(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                this.counters.forEach(c => this.observer.observe(c));
+            }
+
+            animate(el) {
+                const target = parseFloat(el.dataset.count);
+                const isDecimal = target % 1 !== 0;
+                const suffix = el.textContent.replace(/[0-9.]/g, '');
+                const duration = 2000;
+                const start = performance.now();
+
+                const step = (now) => {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+
+                    if (isDecimal) {
+                        el.textContent = current.toFixed(1) + suffix;
+                    } else {
+                        el.textContent = Math.round(current) + suffix;
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                };
+
+                requestAnimationFrame(step);
+            }
+        }
+
+        /* ===========================================
+             FEATURE CARD TILT EFFECT
+             =========================================== */
+        class TiltEffect {
+            constructor() {
+                this.cards = document.querySelectorAll('.feature-card');
+                this.cards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = (e.clientX - rect.left) / rect.width - 0.5;
+                        const y = (e.clientY - rect.top) / rect.height - 0.5;
+                        card.style.transform = `translateY(-4px) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = '';
+                    });
+                });
+            }
+        }
+
+        /* ===========================================
+             INIT
+             =========================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlideController();
+            new EmotionalWaveform(document.getElementById('heroCanvas'));
+            new WaitlistSystem();
+            new CounterAnimator();
+            new TiltEffect();
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const target = document.querySelector(a.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Trigger first slide
+            document.querySelector('.hero-slide').classList.add('visible');
+        });
+    </script>
+</body>
+</html>

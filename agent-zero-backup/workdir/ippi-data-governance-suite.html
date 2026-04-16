@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPPI Data Governance & Generation Suite</title>
+
+    <!-- JNJ JJIM Fonts: Outfit (heading) + Nunito Sans (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           JNJ JJIM BRAND TOKENS
+           Preset #13 — Johnson & Johnson Internal
+           =========================================== */
+        :root {
+            /* Primary brand */
+            --jj-red: #EB1700;
+            --jj-black: #000000;
+            --jj-white: #FFFFFF;
+            --jj-bg-light: #F1EFED;
+
+            /* Warm grays */
+            --jj-gray-warm: #C4BDB6;
+            --jj-gray-mid: #D5CFC9;
+            --jj-gray-tone: #A39992;
+            --jj-brown: #6E6159;
+
+            /* Data visualization (fixed order) */
+            --jj-chart-1: #EB1700;
+            --jj-chart-2: #000000;
+            --jj-chart-3: #C4BDB6;
+            --jj-chart-4: #004686;
+            --jj-chart-5: #68D2FF;
+            --jj-chart-6: #541981;
+
+            /* Typography */
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Nunito Sans', sans-serif;
+
+            /* Sizing — clamp for viewport fit */
+            --title-size: clamp(1.6rem, 4.5vw, 3.2rem);
+            --h2-size: clamp(1.2rem, 3vw, 2.2rem);
+            --h3-size: clamp(1rem, 2.2vw, 1.5rem);
+            --body-size: clamp(0.8rem, 1.4vw, 1.1rem);
+            --small-size: clamp(0.7rem, 1vw, 0.9rem);
+            --caption-size: clamp(0.6rem, 0.9vw, 0.8rem);
+
+            /* Spacing */
+            --slide-padding: clamp(2rem, 5vw, 5rem);
+            --content-gap: clamp(0.6rem, 2vw, 1.8rem);
+            --element-gap: clamp(0.3rem, 1vw, 0.8rem);
+
+            /* Animation — professional, subtle */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.4s;
+        }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        .card, .container, .content-box {
+            max-width: min(90vw, 1100px);
+            max-height: min(80vh, 700px);
+        }
+
+        .feature-list, .bullet-list {
+            gap: clamp(0.4rem, 1vh, 1rem);
+        }
+
+        .feature-list li, .bullet-list li {
+            font-size: var(--body-size);
+            line-height: 1.5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        img, .image-container {
+            max-width: 100%;
+            max-height: min(50vh, 400px);
+            object-fit: contain;
+        }
+
+        /* ===========================================
+           BASE RESET & GLOBALS
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--jj-black);
+            background: var(--jj-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--jj-black);
+            text-align: left;
+            line-height: 1.15;
+        }
+
+        h1 { font-size: var(--title-size); font-weight: 700; }
+        h2 { font-size: var(--h2-size); font-weight: 700; }
+        h3 { font-size: var(--h3-size); font-weight: 600; }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--jj-red);
+            z-index: 1000;
+            transition: width 0.15s ease;
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1.5vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--jj-gray-warm);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--jj-red);
+            transform: scale(1.4);
+        }
+
+        /* ===========================================
+           SLIDE NUMBER
+           =========================================== */
+        .slide-number {
+            position: absolute;
+            bottom: clamp(0.5rem, 1.5vw, 1.5rem);
+            right: clamp(0.5rem, 2vw, 2.5rem);
+            font-family: var(--font-heading);
+            font-size: var(--caption-size);
+            color: var(--jj-gray-tone);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           RED ACCENT BAR
+           =========================================== */
+        .red-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--jj-red);
+        }
+
+        .red-bar-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--jj-red);
+        }
+
+        /* ===========================================
+           ANIMATIONS — Professional, subtle
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .reveal:nth-child(3) { transition-delay: 0.19s; }
+        .reveal:nth-child(4) { transition-delay: 0.26s; }
+        .reveal:nth-child(5) { transition-delay: 0.33s; }
+        .reveal:nth-child(6) { transition-delay: 0.40s; }
+        .reveal:nth-child(7) { transition-delay: 0.47s; }
+        .reveal:nth-child(8) { transition-delay: 0.54s; }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            background: var(--jj-white);
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--slide-padding);
+        }
+
+        .title-slide .red-accent {
+            width: clamp(40px, 5vw, 80px);
+            height: 4px;
+            background: var(--jj-red);
+            margin-bottom: clamp(0.8rem, 2vw, 1.5rem);
+        }
+
+        .title-slide h1 {
+            max-width: 85%;
+            margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .title-slide h1 span {
+            color: var(--jj-red);
+        }
+
+        .title-slide .subtitle {
+            font-family: var(--font-body);
+            font-size: var(--h3-size);
+            color: var(--jj-brown);
+            font-weight: 400;
+            max-width: 75%;
+            margin-bottom: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .title-slide .meta {
+            font-size: var(--caption-size);
+            color: var(--jj-gray-tone);
+        }
+
+        /* ===========================================
+           CONTENT SLIDES
+           =========================================== */
+        .content-slide {
+            background: var(--jj-white);
+        }
+
+        .content-slide .slide-content {
+            padding-top: clamp(2rem, 4vw, 3.5rem);
+            padding-bottom: clamp(2rem, 4vw, 3.5rem);
+            padding-left: calc(var(--slide-padding) + 20px);
+            padding-right: var(--slide-padding);
+        }
+
+        .content-slide h2 {
+            margin-bottom: clamp(0.3rem, 1vw, 0.6rem);
+        }
+
+        .content-slide h2 span {
+            color: var(--jj-red);
+        }
+
+        .content-slide .headline-support {
+            font-size: var(--body-size);
+            color: var(--jj-brown);
+            font-weight: 500;
+            margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
+            max-width: 80%;
+            border-left: 3px solid var(--jj-red);
+            padding-left: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .content-slide ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.3rem, 1vw, 0.7rem);
+        }
+
+        .content-slide ul li {
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            position: relative;
+        }
+
+        .content-slide ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            background: var(--jj-red);
+            border-radius: 1px;
+        }
+
+        .content-slide .callout {
+            background: var(--jj-bg-light);
+            border-left: 3px solid var(--jj-gray-warm);
+            padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.8rem, 2vw, 1.5rem);
+            margin-top: clamp(0.4rem, 1.5vw, 1rem);
+            font-size: var(--small-size);
+            color: var(--jj-brown);
+        }
+
+        .content-slide .callout strong {
+            color: var(--jj-black);
+        }
+
+        /* ===========================================
+           METRIC CARDS
+           =========================================== */
+        .metric-row {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1.2rem);
+            flex-wrap: wrap;
+            margin-top: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .metric-card {
+            flex: 1;
+            min-width: clamp(120px, 20vw, 220px);
+            background: var(--jj-bg-light);
+            border-top: 3px solid var(--jj-red);
+            padding: clamp(0.5rem, 1.2vw, 1rem) clamp(0.6rem, 1.5vw, 1.2rem);
+        }
+
+        .metric-card .metric-value {
+            font-family: var(--font-heading);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--jj-red);
+            line-height: 1.1;
+        }
+
+        .metric-card .metric-label {
+            font-size: var(--caption-size);
+            color: var(--jj-brown);
+            margin-top: clamp(0.2rem, 0.5vw, 0.4rem);
+            line-height: 1.3;
+        }
+
+        /* ===========================================
+           EXECUTION PHASE CARDS
+           =========================================== */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+            margin-top: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .phase-card {
+            background: var(--jj-bg-light);
+            border-left: 3px solid var(--jj-red);
+            padding: clamp(0.5rem, 1.2vw, 1rem) clamp(0.6rem, 1.5vw, 1.2rem);
+        }
+
+        .phase-card h3 {
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--jj-red);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+
+        .phase-card ul {
+            list-style: none;
+            padding: 0;
+            gap: clamp(0.15rem, 0.5vw, 0.3rem);
+        }
+
+        .phase-card ul li {
+            font-size: var(--caption-size);
+            padding-left: clamp(0.6rem, 1vw, 0.8rem);
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .phase-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5em;
+            width: 4px;
+            height: 4px;
+            background: var(--jj-gray-warm);
+            border-radius: 1px;
+        }
+
+        /* ===========================================
+           TABLE SLIDES
+           =========================================== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: clamp(0.5rem, 1.5vw, 1.2rem);
+            font-size: var(--body-size);
+        }
+
+        .data-table thead th {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--jj-white);
+            background: var(--jj-red);
+            padding: clamp(0.4rem, 1vw, 0.8rem) clamp(0.5rem, 1.5vw, 1.2rem);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: clamp(0.4rem, 1vw, 0.75rem) clamp(0.5rem, 1.5vw, 1.2rem);
+            border-bottom: 1px solid var(--jj-gray-mid);
+            vertical-align: top;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: var(--jj-bg-light);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: 2px solid var(--jj-red);
+        }
+
+        /* ===========================================
+           CLOSING SLIDE
+           =========================================== */
+        .closing-slide {
+            background: var(--jj-white);
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--slide-padding);
+        }
+
+        .closing-slide .closing-card {
+            background: var(--jj-bg-light);
+            border-top: 4px solid var(--jj-red);
+            padding: clamp(1.5rem, 3vw, 3rem);
+            max-width: min(85vw, 900px);
+        }
+
+        .closing-slide .closing-card h2 {
+            margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .closing-slide .closing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: clamp(0.8rem, 2vw, 1.5rem);
+        }
+
+        .closing-slide .closing-card ul li {
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            position: relative;
+            margin-bottom: clamp(0.3rem, 1vw, 0.6rem);
+        }
+
+        .closing-slide .closing-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            background: var(--jj-red);
+            border-radius: 1px;
+        }
+
+        .closing-slide .closing-statement {
+            font-family: var(--font-heading);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            color: var(--jj-red);
+            border-left: 3px solid var(--jj-black);
+            padding-left: clamp(0.5rem, 1vw, 1rem);
+            line-height: 1.4;
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.3rem, 4vw, 2.5rem);
+                --h2-size: clamp(1rem, 3vw, 1.75rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.8rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 3.5vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.6rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.2rem, 7vw, 2.5rem);
+            }
+            .grid { grid-template-columns: 1fr; }
+            .phase-grid { grid-template-columns: 1fr; }
+            .metric-row { flex-direction: column; }
+            .nav-dots { right: 4px; }
+            .nav-dot { width: 6px; height: 6px; }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- ===========================================
+         SLIDE 1: TITLE
+         =========================================== -->
+    <section class="slide title-slide" data-title="Title">
+        <div class="red-accent reveal"></div>
+        <h1 class="reveal">IPPI Data Governance &<br><span>Generation Suite</span></h1>
+        <p class="subtitle reveal">Automating the creation, quality, and lifecycle of Investigational Product Preparation Instructions</p>
+        <p class="meta reveal">DCL SSID: 143601 — Internal Use Only</p>
+        <span class="slide-number">01</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 2: SITUATION
+         =========================================== -->
+    <section class="slide content-slide" data-title="Situation">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Situation: <span>IPPI</span> Creation Today</h2>
+            <p class="headline-support reveal">On average 78 IPPIs drafted annually across DPAT authoring teams, CMS review teams, and multiple R&D functions</p>
+            <div class="metric-row reveal">
+                <div class="metric-card">
+                    <div class="metric-value">78</div>
+                    <div class="metric-label">IPPIs drafted annually</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">25 hrs</div>
+                    <div class="metric-label">First-draft effort per IPPI (3 SMEs, 80% of cases)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4 weeks</div>
+                    <div class="metric-label">Draft-to-submission lifecycle (80% of IPPIs)</div>
+                </div>
+            </div>
+            <div class="callout reveal">
+                <strong>Current process:</strong> Manual, template-based, with multiple authors and rounds of review. IPPIs stored in TruVault (TV_TECH). Signed-off attribute forms filed since June 2023.
+            </div>
+        </div>
+        <span class="slide-number">02</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 3: CURRENT CHALLENGES
+         =========================================== -->
+    <section class="slide content-slide" data-title="Challenges">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Current Process <span>Challenges</span></h2>
+            <p class="headline-support reveal">The manual drafting process creates risk, inconsistency, and delays</p>
+            <ul>
+                <li class="reveal">Manually labor-intensive task with no automation support</li>
+                <li class="reveal">Lack of consistency in structure of instructions across authors</li>
+                <li class="reveal">Missing details that can lead to <strong>patient safety risks</strong></li>
+                <li class="reveal">Human errors in drafting dosage and instructions — serious consequences for patients and company</li>
+                <li class="reveal">Variability in wording and comprehensiveness across IPPIs</li>
+                <li class="reveal">Multiple rounds of revisions and reviews needed to catch errors</li>
+                <li class="reveal">Long cycle time — waiting on SMEs for first draft through back-and-forth revisions</li>
+                <li class="reveal">Drafting requires years of experience — new hires struggle without a streamlined process</li>
+            </ul>
+        </div>
+        <span class="slide-number">03</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 4: OBJECTIVES
+         =========================================== -->
+    <section class="slide content-slide" data-title="Objectives">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Objectives: <span>Minimize & Maximize</span></h2>
+            <p class="headline-support reveal">Creating a data governance and generation suite to transform IPPI creation</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>Objective</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Minimize</strong> first-draft creation time</td>
+                        <td>80% of IPPIs auto-generated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Minimize</strong> hours spent drafting</td>
+                        <td>1,872 hands-on hours saved annually</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Minimize</strong> draft-to-submission lifecycle</td>
+                        <td>From 4 weeks → 1 week per IPPI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maximize</strong> IPPI review rate</td>
+                        <td>By reducing cycle time 75%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout reveal">
+                <strong>Cost avoidance:</strong> 9,360 hands-off hours per year. 1,560 FTE work days currently spent on the IPPI lifecycle reduced by 75%.
+            </div>
+        </div>
+        <span class="slide-number">04</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 5: EXECUTION — MAIN
+         =========================================== -->
+    <section class="slide content-slide" data-title="Execution: Main">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>Main</span></h2>
+            <p class="headline-support reveal">Leveraging the DS Digital Twin generic code base for orchestration and automation</p>
+            <ul>
+                <li class="reveal">Collect user impact information for work activities</li>
+                <li class="reveal">Obtain outcomes of historical IPPIs to train the system</li>
+                <li class="reveal">Create unified Functional Area / Management Operational Health dashboards</li>
+                <li class="reveal">Unify comprehension and writing style across all IPPIs</li>
+                <li class="reveal">Identify potential dosing, preparation, and administration errors</li>
+                <li class="reveal">Prevent dosing errors before instructions are published</li>
+                <li class="reveal">Lower adverse events caused by errors in dosage, preparation, and administration</li>
+                <li class="reveal">Optimize IPPI creation process — detect loops, missing points, and gaps</li>
+            </ul>
+        </div>
+        <span class="slide-number">05</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 6: EXECUTION — HISTORICAL + DIAGNOSTIC
+         =========================================== -->
+    <section class="slide content-slide" data-title="Historical & Diagnostic">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>Historical & Diagnostic</span></h2>
+            <p class="headline-support reveal">Building on historical data to enable quality control and future-state automation</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>Historical — Building for the Future</h3>
+                    <ul>
+                        <li>Map the IPPI drafting process end-to-end</li>
+                        <li>Extract entities, methods, and formulas used in IPPI creation</li>
+                        <li>Find linkages between concepts</li>
+                        <li>Automated tools to extract concept chains and detect missing information</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Diagnostic — Quality Control</h3>
+                    <ul>
+                        <li>Identify lack of details and wrong information in historical documents</li>
+                        <li>Rate comprehension of historical IPPIs</li>
+                        <li>Rate accuracy of historical IPPIs</li>
+                        <li>Link comprehension/accuracy scores to clinical study outcomes and adverse events</li>
+                        <li>Conformance: compare process model against historical IPPIs created</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">06</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 7: EXECUTION — PREDICTIVE + PRESCRIPTIVE
+         =========================================== -->
+    <section class="slide content-slide" data-title="Predictive & Prescriptive">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>Predictive & Prescriptive</span></h2>
+            <p class="headline-support reveal">From automated drafting to continuous process enhancement</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>Predictive — Quality Assurance</h3>
+                    <ul>
+                        <li>Cover drafting for up to 80% of IPPIs yearly</li>
+                        <li>Drafts mimic highly comprehensive and accurate historical IPPIs</li>
+                        <li>Auto-generate first drafts that meet quality benchmarks</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Prescriptive — Process Enhancement</h3>
+                    <ul>
+                        <li>Enhance the mapped process to produce superior results</li>
+                        <li>Recommend optimal instruction patterns based on historical outcomes</li>
+                        <li>Continuously improve drafting templates from feedback loops</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">07</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 8: EXPECTED IMPACT
+         =========================================== -->
+    <section class="slide content-slide" data-title="Expected Impact">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Expected <span>Impact</span></h2>
+            <p class="headline-support reveal">Quantifiable cost reduction and cycle-time improvement across the IPPI lifecycle</p>
+            <div class="metric-row reveal">
+                <div class="metric-card">
+                    <div class="metric-value">1,872</div>
+                    <div class="metric-label">Hands-on hours saved annually (first-draft automation)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">9,360</div>
+                    <div class="metric-label">Hands-off hours per year (cost avoidance)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">75%</div>
+                    <div class="metric-label">Reduction in FTE resource requirement</div>               </div>
+            </div>
+            <div class="callout reveal">
+                <strong>Lifecycle target:</strong> From 4 weeks → 1 week per IPPI. 1,560 FTE work days annually compressed into a fraction — freeing SME capacity for higher-value clinical decision-making.
+            </div>
+        </div>
+        <span class="slide-number">08</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 9: CLOSING
+         =========================================== -->
+    <section class="slide closing-slide" data-title="Closing">
+        <div class="red-bar-top"></div>
+        <div class="closing-card">
+            <h2 class="reveal">Why This <span style="color: var(--jj-red);">Matters</span></h2>
+            <ul>
+                <li class="reveal">Automates 80% of IPPI first-draft creation, eliminating manual bottleneck</li>
+                <li class="reveal">Prevents dosing and administration errors <strong>before</strong> instructions are published</li>
+                <li class="reveal">Unifies quality and comprehensiveness across all IPPIs</li>
+                <li class="reveal">Reduces draft-to-submission from 4 weeks to 1 week — 75% resource savings</li>
+                <li class="reveal">Provides a repeatable pattern for other document governance use cases</li>
+            </ul>
+            <p class="closing-statement reveal">A data governance suite that protects patients, reduces cost, and frees SME capacity for higher-value work.</p>
+        </div>
+        <span class="slide-number">09</span>
+    </section>
+
+    <!-- ===========================================
+         PRESENTATION CONTROLLER
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.progressBar = document.getElementById('progressBar');
+                this.navDotsContainer = document.getElementById('navDots');
+
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.setupNavDots();
+                this.updateProgress();
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = idx;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+                        e.preventDefault(); this.goToSlide(this.currentSlide + 1);
+                    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                        e.preventDefault(); this.goToSlide(this.currentSlide - 1);
+                    } else if (e.key === 'Home') {
+                        e.preventDefault(); this.goToSlide(0);
+                    } else if (e.key === 'End') {
+                        e.preventDefault(); this.goToSlide(this.slides.length - 1);
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let startY = 0;
+                document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    const diff = startY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.goToSlide(this.currentSlide + 1);
+                        else this.goToSlide(this.currentSlide - 1);
+                    }
+                }, { passive: true });
+            }
+
+            setupWheelNav() {
+                let lastWheel = 0;
+                document.addEventListener('wheel', (e) => {
+                    const now = Date.now();
+                    if (now - lastWheel < 800) return;
+                    lastWheel = now;
+                    if (e.deltaY > 30) this.goToSlide(this.currentSlide + 1);
+                    else if (e.deltaY < -30) this.goToSlide(this.currentSlide - 1);
+                }, { passive: true });
+            }
+
+            setupNavDots() {
+                this.navDotsContainer.innerHTML = '';
+                this.slides.forEach((slide, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ': ' + (slide.dataset.title || ''));
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navDotsContainer.appendChild(dot);
+                });
+            }
+
+            updateNavDots() {
+                const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+                dots.forEach((dot, i) => dot.classList.toggle('active', i === this.currentSlide));
+            }
+
+            updateProgress() {
+                const pct = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = pct + '%';
+            }
+
+            goToSlide(index) {
+                if (index < 0 || index >= this.slides.length) return;
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                this.currentSlide = index;
+                this.updateProgress();
+                this.updateNavDots();
+            }
+        }
+
+        new SlidePresentation();
+    </script>
+</body>
+</html>

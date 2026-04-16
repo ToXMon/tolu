@@ -1,0 +1,16 @@
+{
+  "topic": "domain",
+  "discovered": "2026-04-11",
+  "connections": [
+    {
+      "wing": "README.md",
+      "hall": "",
+      "file": "README.md"
+    },
+    {
+      "wing": "domain",
+      "hall": "",
+      "file": "README.md"
+    }
+  ]
+}

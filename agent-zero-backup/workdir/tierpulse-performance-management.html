@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TierPulse — Tier 1–3 Performance Management</title>
+
+    <!-- JNJ JJIM Fonts: Outfit (heading) + Nunito Sans (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           JNJ JJIM BRAND TOKENS
+           Preset #13 — Johnson & Johnson Internal
+           =========================================== */
+        :root {
+            --jj-red: #EB1700;
+            --jj-black: #000000;
+            --jj-white: #FFFFFF;
+            --jj-bg-light: #F1EFED;
+            --jj-gray-warm: #C4BDB6;
+            --jj-gray-mid: #D5CFC9;
+            --jj-gray-tone: #A39992;
+            --jj-brown: #6E6159;
+            --jj-chart-1: #EB1700;
+            --jj-chart-2: #000000;
+            --jj-chart-3: #C4BDB6;
+            --jj-chart-4: #004686;
+            --jj-chart-5: #68D2FF;
+            --jj-chart-6: #541981;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Nunito Sans', sans-serif;
+            --title-size: clamp(1.6rem, 4.5vw, 3.2rem);
+            --h2-size: clamp(1.2rem, 3vw, 2.2rem);
+            --h3-size: clamp(1rem, 2.2vw, 1.5rem);
+            --body-size: clamp(0.8rem, 1.4vw, 1.1rem);
+            --small-size: clamp(0.7rem, 1vw, 0.9rem);
+            --caption-size: clamp(0.6rem, 0.9vw, 0.8rem);
+            --slide-padding: clamp(2rem, 5vw, 5rem);
+            --content-gap: clamp(0.6rem, 2vw, 1.8rem);
+            --element-gap: clamp(0.3rem, 1vw, 0.8rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.4s;
+        }
+
+        /* ===========================================
+           VIEWPORT FITTING
+           =========================================== */
+        html, body { height: 100%; overflow-x: hidden; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+        .slide {
+            width: 100vw; height: 100vh; height: 100dvh;
+            overflow: hidden; scroll-snap-align: start;
+            display: flex; flex-direction: column; position: relative;
+        }
+
+        .slide-content {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            max-height: 100%; overflow: hidden; padding: var(--slide-padding);
+        }
+
+        .card, .container, .content-box { max-width: min(90vw, 1100px); max-height: min(80vh, 700px); }
+        .feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+        .feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.5; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); }
+        img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+
+        /* ===========================================
+           BASE RESET & GLOBALS
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); color: var(--jj-black); background: var(--jj-white); -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: var(--font-heading); color: var(--jj-black); text-align: left; line-height: 1.15; }
+        h1 { font-size: var(--title-size); font-weight: 700; }
+        h2 { font-size: var(--h2-size); font-weight: 700; }
+        h3 { font-size: var(--h3-size); font-weight: 600; }
+        p, li { font-size: var(--body-size); line-height: 1.6; text-align: left; }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--jj-red); z-index: 1000; transition: width 0.15s ease; }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots { position: fixed; right: clamp(0.5rem, 1.5vw, 1.5rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--jj-gray-warm); border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+        .nav-dot.active { background: var(--jj-red); transform: scale(1.4); }
+
+        /* ===========================================
+           SLIDE NUMBER
+           =========================================== */
+        .slide-number { position: absolute; bottom: clamp(0.5rem, 1.5vw, 1.5rem); right: clamp(0.5rem, 2vw, 2.5rem); font-family: var(--font-heading); font-size: var(--caption-size); color: var(--jj-gray-tone); font-weight: 600; }
+
+        /* ===========================================
+           RED ACCENT BARS
+           =========================================== */
+        .red-bar { position: absolute; left: 0; top: 0; width: 6px; height: 100%; background: var(--jj-red); }
+        .red-bar-top { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--jj-red); }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity var(--duration) var(--ease-out-expo), transform var(--duration) var(--ease-out-expo); }
+        .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .reveal:nth-child(3) { transition-delay: 0.19s; }
+        .reveal:nth-child(4) { transition-delay: 0.26s; }
+        .reveal:nth-child(5) { transition-delay: 0.33s; }
+        .reveal:nth-child(6) { transition-delay: 0.40s; }
+        .reveal:nth-child(7) { transition-delay: 0.47s; }
+        .reveal:nth-child(8) { transition-delay: 0.54s; }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide { background: var(--jj-white); justify-content: center; align-items: flex-start; padding: var(--slide-padding); }
+        .title-slide .red-accent { width: clamp(40px, 5vw, 80px); height: 4px; background: var(--jj-red); margin-bottom: clamp(0.8rem, 2vw, 1.5rem); }
+        .title-slide h1 { max-width: 85%; margin-bottom: clamp(0.5rem, 1.5vw, 1rem); }
+        .title-slide h1 span { color: var(--jj-red); }
+        .title-slide .subtitle { font-family: var(--font-body); font-size: var(--h3-size); color: var(--jj-brown); font-weight: 400; max-width: 75%; margin-bottom: clamp(0.5rem, 1vw, 1rem); }
+        .title-slide .meta { font-size: var(--caption-size); color: var(--jj-gray-tone); }
+
+        /* ===========================================
+           CONTENT SLIDES
+           =========================================== */
+        .content-slide { background: var(--jj-white); }
+        .content-slide .slide-content { padding-top: clamp(2rem, 4vw, 3.5rem); padding-bottom: clamp(2rem, 4vw, 3.5rem); padding-left: calc(var(--slide-padding) + 20px); padding-right: var(--slide-padding); }
+        .content-slide h2 { margin-bottom: clamp(0.3rem, 1vw, 0.6rem); }
+        .content-slide h2 span { color: var(--jj-red); }
+        .content-slide .headline-support { font-size: var(--body-size); color: var(--jj-brown); font-weight: 500; margin-bottom: clamp(0.5rem, 2vw, 1.5rem); max-width: 80%; border-left: 3px solid var(--jj-red); padding-left: clamp(0.5rem, 1vw, 1rem); }
+        .content-slide ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: clamp(0.3rem, 1vw, 0.7rem); }
+        .content-slide ul li { padding-left: clamp(1rem, 2vw, 1.5rem); position: relative; }
+        .content-slide ul li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; background: var(--jj-red); border-radius: 1px; }
+        .content-slide .callout { background: var(--jj-bg-light); border-left: 3px solid var(--jj-gray-warm); padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.8rem, 2vw, 1.5rem); margin-top: clamp(0.4rem, 1.5vw, 1rem); font-size: var(--small-size); color: var(--jj-brown); }
+        .content-slide .callout strong { color: var(--jj-black); }
+
+        /* ===========================================
+           METRIC CARDS
+           =========================================== */
+        .metric-row { display: flex; gap: clamp(0.5rem, 1.5vw, 1.2rem); flex-wrap: wrap; margin-top: clamp(0.5rem, 1.5vw, 1rem); }
+        .metric-card { flex: 1; min-width: clamp(120px, 20vw, 220px); background: var(--jj-bg-light); border-top: 3px solid var(--jj-red); padding: clamp(0.5rem, 1.2vw, 1rem) clamp(0.6rem, 1.5vw, 1.2rem); }
+        .metric-card .metric-value { font-family: var(--font-heading); font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 700; color: var(--jj-red); line-height: 1.1; }
+        .metric-card .metric-label { font-size: var(--caption-size); color: var(--jj-brown); margin-top: clamp(0.2rem, 0.5vw, 0.4rem); line-height: 1.3; }
+
+        /* ===========================================
+           PHASE CARDS
+           =========================================== */
+        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); margin-top: clamp(0.5rem, 1.5vw, 1rem); }
+        .phase-card { background: var(--jj-bg-light); border-left: 3px solid var(--jj-red); padding: clamp(0.5rem, 1.2vw, 1rem) clamp(0.6rem, 1.5vw, 1.2rem); }
+        .phase-card h3 { font-size: var(--small-size); text-transform: uppercase; letter-spacing: 0.04em; color: var(--jj-red); margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem); }
+        .phase-card ul { list-style: none; padding: 0; gap: clamp(0.15rem, 0.5vw, 0.3rem); }
+        .phase-card ul li { font-size: var(--caption-size); padding-left: clamp(0.6rem, 1vw, 0.8rem); position: relative; line-height: 1.4; }
+        .phase-card ul li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 4px; height: 4px; background: var(--jj-gray-warm); border-radius: 1px; }
+
+        /* ===========================================
+           DATA TABLES
+           =========================================== */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: clamp(0.5rem, 1.5vw, 1.2rem); font-size: var(--body-size); }
+        .data-table thead th { font-family: var(--font-heading); font-weight: 700; font-size: var(--small-size); text-transform: uppercase; letter-spacing: 0.05em; color: var(--jj-white); background: var(--jj-red); padding: clamp(0.4rem, 1vw, 0.8rem) clamp(0.5rem, 1.5vw, 1.2rem); text-align: left; white-space: nowrap; }
+        .data-table tbody td { padding: clamp(0.4rem, 1vw, 0.75rem) clamp(0.5rem, 1.5vw, 1.2rem); border-bottom: 1px solid var(--jj-gray-mid); vertical-align: top; }
+        .data-table tbody tr:nth-child(even) { background: var(--jj-bg-light); }
+        .data-table tbody tr:last-child td { border-bottom: 2px solid var(--jj-red); }
+
+        /* ===========================================
+           CLOSING SLIDE
+           =========================================== */
+        .closing-slide { background: var(--jj-white); justify-content: center; align-items: flex-start; padding: var(--slide-padding); }
+        .closing-slide .closing-card { background: var(--jj-bg-light); border-top: 4px solid var(--jj-red); padding: clamp(1.5rem, 3vw, 3rem); max-width: min(85vw, 900px); }
+        .closing-slide .closing-card h2 { margin-bottom: clamp(0.5rem, 1.5vw, 1rem); }
+        .closing-slide .closing-card ul { list-style: none; padding: 0; margin-bottom: clamp(0.8rem, 2vw, 1.5rem); }
+        .closing-slide .closing-card ul li { padding-left: clamp(1rem, 2vw, 1.5rem); position: relative; margin-bottom: clamp(0.3rem, 1vw, 0.6rem); }
+        .closing-slide .closing-card ul li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; background: var(--jj-red); border-radius: 1px; }
+        .closing-slide .closing-statement { font-family: var(--font-heading); font-size: var(--h3-size); font-weight: 600; color: var(--jj-red); border-left: 3px solid var(--jj-black); padding-left: clamp(0.5rem, 1vw, 1rem); line-height: 1.4; }
+
+        /* ===========================================
+           SQDCP PILLAR STRIP
+           =========================================== */
+        .sqdcp-strip { display: flex; gap: clamp(0.3rem, 1vw, 0.6rem); margin-top: clamp(0.4rem, 1vw, 0.8rem); flex-wrap: wrap; }
+        .sqdcp-pill { font-family: var(--font-heading); font-size: var(--caption-size); font-weight: 700; padding: clamp(0.2rem, 0.6vw, 0.4rem) clamp(0.4rem, 1vw, 0.8rem); border-radius: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .sqdcp-safety { background: var(--jj-chart-1); color: var(--jj-white); }
+        .sqdcp-quality { background: var(--jj-chart-4); color: var(--jj-white); }
+        .sqdcp-delivery { background: var(--jj-chart-5); color: var(--jj-black); }
+        .sqdcp-cost { background: var(--jj-chart-6); color: var(--jj-white); }
+        .sqdcp-people { background: var(--jj-gray-warm); color: var(--jj-black); }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-height: 700px) { :root { --slide-padding: clamp(1rem, 3vw, 2.5rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.3rem, 4vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); } }
+        @media (max-height: 600px) { :root { --slide-padding: clamp(0.8rem, 2.5vw, 1.5rem); --title-size: clamp(1.1rem, 3.5vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.95rem); } .nav-dots { display: none; } }
+        @media (max-height: 500px) { :root { --slide-padding: clamp(0.6rem, 2vw, 1rem); --title-size: clamp(1rem, 3vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); } }
+        @media (max-width: 600px) { :root { --title-size: clamp(1.2rem, 7vw, 2.5rem); } .grid, .phase-grid { grid-template-columns: 1fr; } .metric-row, .sqdcp-strip { flex-direction: column; } .nav-dots { right: 4px; } .nav-dot { width: 6px; height: 6px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } html { scroll-behavior: auto; } }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- ===========================================
+         SLIDE 1: TITLE
+         =========================================== -->
+    <section class="slide title-slide" data-title="Title">
+        <div class="red-accent reveal"></div>
+        <h1 class="reveal">TierPulse: Tier 1–3<br><span>Performance Management</span></h1>
+        <p class="subtitle reveal">Data Operating Theory → governed metric capture, structured escalation, and Tier 3 roll-up</p>
+        <p class="meta reveal">J&J Innovative Medicine — LVV Raritan | TierPulse</p>
+        <span class="slide-number">01</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 2: SITUATION
+         =========================================== -->
+    <section class="slide content-slide" data-title="Situation">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Situation: <span>Before TierPulse</span></h2>
+            <p class="headline-support reveal">Performance management was fragmented — no Tier 1, inconsistent Tier 2, and zero standardized Tier 3 leadership visibility</p>
+            <ul>
+                <li class="reveal"><strong>Tier 1 did not exist</strong> — no daily operational pulse at the shop floor</li>
+                <li class="reveal">Tier 2 dashboards existed in silos — no unified escalation or action tracking</li>
+                <li class="reveal">Escalations lacked consistent owner, due date, and status capture</li>
+                <li class="reveal">No standardized Tier 3 leadership view across LVV sites</li>
+                <li class="reveal">Manual data pulls, no governed metric definitions, no auditability</li>
+            </ul>
+            <div class="callout reveal">
+                <strong>Design intent:</strong> Real-time operational pulse + structured escalation + transferable roll-up. Not dashboards for dashboards' sake — decision infrastructure.
+            </div>
+        </div>
+        <span class="slide-number">02</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 3: SQDCP FRAMEWORK
+         =========================================== -->
+    <section class="slide content-slide" data-title="SQDCP Framework">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Conceptual Alignment: <span>SQDCP Framework</span></h2>
+            <p class="headline-support reveal">Every metric at every tier maps to one of five performance pillars</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>Safety</h3>
+                    <ul>
+                        <li>Operator safety</li>
+                        <li>Data integrity risk</li>
+                        <li>Compliance risk</li>
+                        <li>Error prevention</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Quality</h3>
+                    <ul>
+                        <li>Product quality</li>
+                        <li>Data accuracy</li>
+                        <li>Right-first-time performance</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Delivery</h3>
+                    <ul>
+                        <li>Cycle time</li>
+                        <li>Flow and throughput</li>
+                        <li>Schedule adherence</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Cost</h3>
+                    <ul>
+                        <li>Resource utilization</li>
+                        <li>Rework and downtime</li>
+                        <li>Material waste</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>People</h3>
+                    <ul>
+                        <li>Training completion</li>
+                        <li>Engagement and adoption</li>
+                        <li>Retention and usability</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">03</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 4: OBJECTIVES
+         =========================================== -->
+    <section class="slide content-slide" data-title="Objectives">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Objectives: <span>What We Set Out to Build</span></h2>
+            <p class="headline-support reveal">A governed, hybrid, transferable performance management system across all three tiers</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>Principle</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hybrid by design</strong></td>
+                        <td>Human confirms attainment; automation supplies evidence + trends</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Governed</strong></td>
+                        <td>Metric catalog + definitions + auditability (who / when / what changed)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transferable</strong></td>
+                        <td>Site configuration layer + standardized Tier 3 roll-up template</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Escalation-driven</strong></td>
+                        <td>Structured action log: owner + due date + status at every tier</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span class="slide-number">04</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 5: EXECUTION — MAIN (DOT BUCKETS)
+         =========================================== -->
+    <section class="slide content-slide" data-title="Data Operating Buckets">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>Analytical Ask by Data Operating Bucket</span></h2>
+            <p class="headline-support reveal">Six data operating buckets map directly to TierPulse outputs</p>
+            <table class="data-table reveal">
+                <thead>
+                    <tr>
+                        <th>Data Operating Bucket</th>
+                        <th>TierPulse Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1) Governance & Provenance</strong></td>
+                        <td>Maximize definition clarity: owner, target, frequency, status</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2) Generation</strong></td>
+                        <td>Minimize manual pulls — source COMET / SAP / MES / Curve signals</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3) Collection & Standardization</strong></td>
+                        <td>Maximize harmonization: canonical metric IDs, SQDCP mapping</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4) Aggregation & Enrichment</strong></td>
+                        <td>Optimize enriched outputs: 6-day & 14-day trends, 7-day windowing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5) Analysis</strong></td>
+                        <td>Maximize decision support: persistent red detection, cross-functional flags</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6) Application</strong></td>
+                        <td>Optimize tier-ready views: Tier 1 board, Tier 2 trends, Tier 3 roll-up</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span class="slide-number">05</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 6: EXECUTION — WHAT WE BUILT
+         =========================================== -->
+    <section class="slide content-slide" data-title="Artifacts">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>What We Built</span></h2>
+            <p class="headline-support reveal">Artifact-driven implementation — tangible outputs at every tier level</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>Tier 1 — Daily Board</h3>
+                    <ul>
+                        <li>Shop-floor operational pulse</li>
+                        <li>SQDCP metric status at a glance</li>
+                        <li>Owner-assigned escalation capture</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Tier 2 — 2x/Week Board</h3>
+                    <ul>
+                        <li>Trend-enriched metric views</li>
+                        <li>6-day and 14-day trend signals</li>
+                        <li>Cross-functional flagging</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Unified Action Log</h3>
+                    <ul>
+                        <li>Owner + due date + status</li>
+                        <li>Escalation tracking across tiers</li>
+                        <li>Audit trail for governance</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="callout reveal">
+                <strong>Scope:</strong> Current state is descriptive/diagnostic with structured escalation logic. Predictive and prescriptive capabilities are phased after automation maturity.
+            </div>
+        </div>
+        <span class="slide-number">06</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 7: EXECUTION — INTEGRITY & ADOPTION
+         =========================================== -->
+    <section class="slide content-slide" data-title="Integrity & Adoption">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Execution: <span>Data Integrity & Adoption</span></h2>
+            <p class="headline-support reveal">Guardrails and human-centered design ensure trust and sustained adoption</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>3Es Framework</h3>
+                    <ul>
+                        <li>Efficiency — streamlined workflows</li>
+                        <li>Effectiveness — better decision signals</li>
+                        <li>Experience — user-impact focus</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Data Integrity Controls</h3>
+                    <ul>
+                        <li>Missing data guardrails</li>
+                        <li>Incorrect data detection</li>
+                        <li>Imprecise / irrelevant filters</li>
+                        <li>Counterserendipity checks for automation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="callout reveal">
+                <strong>Principle:</strong> TierPulse is designed for behavior-aligned adoption — balancing technical completeness with user experience. Standards prevent negative effects as automation scales.
+            </div>
+        </div>
+        <span class="slide-number">07</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 8: RESULTS — EARLY EVIDENCE
+         =========================================== -->
+    <section class="slide content-slide" data-title="Results">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Verified <span>Results & Early Signals</span></h2>
+            <p class="headline-support reveal">Measurable impact from TierPulse implementation</p>
+            <div class="metric-row reveal">
+                <div class="metric-card">
+                    <div class="metric-value">83%</div>
+                    <div class="metric-label">Reduction in report development time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">80→90%+</div>
+                    <div class="metric-label">On-time training completion rate improvement</div>
+                </div>
+            </div>
+            <ul>
+                <li class="reveal">Faster overdue non-conformance identification through persistent red detection</li>
+                <li class="reveal">Improved material readiness visibility across production lines</li>
+                <li class="reveal">Consistent tracking and feedback loop sustaining performance gains</li>
+                <li class="reveal">Feedback-driven improvements showing maturity in operating model adoption</li>
+            </ul>
+        </div>
+        <span class="slide-number">08</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 9: ROADMAP — TIER 3 & PRESCRIPTIVE
+         =========================================== -->
+    <section class="slide content-slide" data-title="Roadmap">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Roadmap: <span>Tier 3 & Prescriptive Analytics</span></h2>
+            <p class="headline-support reveal">End-state target — automated, prescriptive Tier 3 roll-up for leadership decision queues</p>
+            <div class="phase-grid reveal">
+                <div class="phase-card">
+                    <h3>Historical — Foundation</h3>
+                    <ul>
+                        <li>Map Tier 1–3 process end-to-end</li>
+                        <li>Extract metric entities and linkages</li>
+                        <li>Automated concept chain extraction from historical boards</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Diagnostic — Quality Control</h3>
+                    <ul>
+                        <li>Identify missing details and wrong information</li>
+                        <li>Rate comprehension and accuracy of historical metrics</li>
+                        <li>Link scores to outcomes and adverse events</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Predictive — Automation</h3>
+                    <ul>
+                        <li>Automate metric capture for 80%+ of Tier boards</li>
+                        <li>Signal generation mimicking high-quality historical patterns</li>
+                    </ul>
+                </div>
+                <div class="phase-card">
+                    <h3>Prescriptive — Tier 3 Roll-Up</h3>
+                    <ul>
+                        <li>Portfolio-level leadership decision queue</li>
+                        <li>Process enhancement recommendations</li>
+                        <li>Cross-site comparability and benchmarking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">09</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 10: NEXT STEPS
+         =========================================== -->
+    <section class="slide content-slide" data-title="Next Steps">
+        <div class="red-bar"></div>
+        <div class="slide-content">
+            <h2 class="reveal">Next Steps & <span>Asks</span></h2>
+            <p class="headline-support reveal">Concrete actions to scale TierPulse from pilot to enterprise capability</p>
+            <ul>
+                <li class="reveal"><strong>Ask 1:</strong> Evaluate further data enrichment via Databricks / COMET connection for automated signal generation</li>
+                <li class="reveal"><strong>Ask 2:</strong> Pilot Tier 3 roll-up board — monthly leadership cadence with decision queue</li>
+                <li class="reveal"><strong>Ask 3:</strong> Approve replication approach — site configuration layer to Sassenheim and beyond</li>
+                <li class="reveal"><strong>Ask 4:</strong> Establish data quality guardrails — minimum standard + ownership accountability</li>
+            </ul>
+            <div class="callout reveal">
+                <strong>Parking lot:</strong> Metric catalog, meeting standards, source-system mapping, and FAQ documented in appendix.
+            </div>
+        </div>
+        <span class="slide-number">10</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 11: CLOSING
+         =========================================== -->
+    <section class="slide closing-slide" data-title="Closing">
+        <div class="red-bar-top"></div>
+        <div class="closing-card">
+            <h2 class="reveal">Why This <span style="color: var(--jj-red);">Matters</span></h2>
+            <ul>
+                <li class="reveal">TierPulse operationalizes data operating theory — not dashboards, but decision infrastructure</li>
+                <li class="reveal">Governed metric capture replaces manual pulls with automated, auditable signals</li>
+                <li class="reveal">Structured escalation drives accountability at every tier level</li>
+                <li class="reveal">Transferable design enables replication across LVV sites and beyond</li>
+                <li class="reveal">Tier 3 prescriptive roadmap positions leadership for portfolio-level decision-making</li>
+            </ul>
+            <p class="closing-statement reveal">Data operating theory becomes real at the point where operational decisions are made.</p>
+        </div>
+        <span class="slide-number">11</span>
+    </section>
+
+    <!-- ===========================================
+         PRESENTATION CONTROLLER
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.progressBar = document.getElementById('progressBar');
+                this.navDotsContainer = document.getElementById('navDots');
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.setupNavDots();
+                this.updateProgress();
+            }
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = idx;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); this.goToSlide(this.currentSlide + 1); }
+                    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); this.goToSlide(this.currentSlide - 1); }
+                    else if (e.key === 'Home') { e.preventDefault(); this.goToSlide(0); }
+                    else if (e.key === 'End') { e.preventDefault(); this.goToSlide(this.slides.length - 1); }
+                });
+            }
+            setupTouchNav() {
+                let startY = 0;
+                document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    const diff = startY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) { if (diff > 0) this.goToSlide(this.currentSlide + 1); else this.goToSlide(this.currentSlide - 1); }
+                }, { passive: true });
+            }
+            setupWheelNav() {
+                let lastWheel = 0;
+                document.addEventListener('wheel', (e) => {
+                    const now = Date.now();
+                    if (now - lastWheel < 800) return;
+                    lastWheel = now;
+                    if (e.deltaY > 30) this.goToSlide(this.currentSlide + 1);
+                    else if (e.deltaY < -30) this.goToSlide(this.currentSlide - 1);
+                }, { passive: true });
+            }
+            setupNavDots() {
+                this.navDotsContainer.innerHTML = '';
+                this.slides.forEach((slide, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ': ' + (slide.dataset.title || ''));
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navDotsContainer.appendChild(dot);
+                });
+            }
+            updateNavDots() {
+                const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+                dots.forEach((dot, i) => dot.classList.toggle('active', i === this.currentSlide));
+            }
+            updateProgress() {
+                const pct = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = pct + '%';
+            }
+            goToSlide(index) {
+                if (index < 0 || index >= this.slides.length) return;
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                this.currentSlide = index;
+                this.updateProgress();
+                this.updateNavDots();
+            }
+        }
+        new SlidePresentation();
+    </script>
+</body>
+</html>

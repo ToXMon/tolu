@@ -1,0 +1,16 @@
+{
+  "proxies": {
+    "/api/waitlist": {
+      "upstream": "http://AKASH_ENDPOINT:8000/api/waitlist",
+      "method": "POST"
+    },
+    "/api/health": {
+      "upstream": "http://AKASH_ENDPOINT:8000/api/health",
+      "method": "GET"
+    },
+    "/api/waitlist/count": {
+      "upstream": "http://AKASH_ENDPOINT:8000/api/waitlist/count",
+      "method": "GET"
+    }
+  }
+}

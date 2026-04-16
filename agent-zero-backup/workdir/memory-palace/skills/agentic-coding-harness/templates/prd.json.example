@@ -1,0 +1,62 @@
+{
+  "project": "ProjectName",
+  "branchName": "feature/task-description",
+  "description": "Clear one-line objective describing what this feature accomplishes",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Add data model and types",
+      "description": "As a developer, I need typed data models so that the feature has a strong type foundation.",
+      "acceptanceCriteria": [
+        "Type definitions created in src/types/",
+        "Database schema defined",
+        "Typecheck passes with no errors"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Foundation story — must be complete before others"
+    },
+    {
+      "id": "US-002",
+      "title": "Implement core business logic",
+      "description": "As a developer, I need the core logic implemented so that the feature functions correctly.",
+      "acceptanceCriteria": [
+        "Business logic functions are typed and tested",
+        "Error handling covers all edge cases",
+        "No file exceeds 300 lines",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Add API routes",
+      "description": "As a user, I need API endpoints so that I can interact with the feature programmatically.",
+      "acceptanceCriteria": [
+        "Routes handle valid and invalid inputs correctly",
+        "Response types are explicit",
+        "Rate limiting applied where needed",
+        "Integration tests pass"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Write comprehensive tests",
+      "description": "As a developer, I need test coverage so that changes can be verified automatically.",
+      "acceptanceCriteria": [
+        "Unit tests for all business logic functions",
+        "Integration tests for all API endpoints",
+        "Test coverage above 80%",
+        "All tests pass"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

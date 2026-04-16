@@ -1,0 +1,62 @@
+{
+  "target_number": "(732) 874-0910",
+  "timestamp": "2026-04-09T03:05:51.871817",
+  "parsing": {
+    "valid": true,
+    "possible": true,
+    "e164_format": "+17328740910",
+    "international_format": "+1 732-874-0910",
+    "national_format": "(732) 874-0910",
+    "country_code": 1,
+    "national_number": "7328740910",
+    "region": "US",
+    "number_type": "2",
+    "number_type_name": "FIXED_LINE_OR_MOBILE"
+  },
+  "carrier_info": {
+    "phonenumbers_carrier": "Unknown"
+  },
+  "location_info": {
+    "geocoder_location": "New Jersey",
+    "timezones": [
+      "America/New_York"
+    ],
+    "area_code_detail": "New Jersey (Central: New Brunswick, Toms River, Lakewood, Freehold)"
+  },
+  "cnam_lookups": [],
+  "api_lookups": [
+    {
+      "source": "numverify",
+      "data": {
+        "success": false,
+        "error": {
+          "code": 101,
+          "type": "missing_access_key",
+          "info": "You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]"
+        }
+      }
+    }
+  ],
+  "identity_analysis": {
+    "all_found_names": [],
+    "family_name_matches": {
+      "possible_person": {
+        "search_name": "Deeksha",
+        "found": false,
+        "matched_entries": []
+      },
+      "father": {
+        "search_name": "Susheel",
+        "found": false,
+        "matched_entries": []
+      },
+      "mother": {
+        "search_name": "Venna",
+        "found": false,
+        "matched_entries": []
+      }
+    },
+    "identity_confidence": "LOW"
+  },
+  "summary": {}
+}
