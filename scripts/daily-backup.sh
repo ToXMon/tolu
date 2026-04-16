@@ -46,6 +46,13 @@ rsync -a --delete \
   --exclude='__pycache__/' \
   --exclude='node_modules/' \
   --exclude='.git/' \
+  --exclude='browserpod/' \
+  --exclude='domino-claude-plugin/' \
+  --exclude='lunel/' \
+  --exclude='openclaude/' \
+  --exclude='sentient/' \
+  --exclude='tolu-check/' \
+  --exclude='tolu-portfolio-rewrite/' \
   /a0/usr/workdir/ "$BACKUP_DIR/workdir/" 2>/dev/null || echo "⚠️  workdir sync had issues"
 
 # 6. Custom prompts (user overrides only - skip framework defaults)
