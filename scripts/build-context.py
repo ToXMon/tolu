@@ -131,6 +131,8 @@ def build_wakeup() -> str:
 
     # Layer 2: Recent Rooms
     recent = read_layer2()
+    if isinstance(recent, dict):
+        recent = list(recent.values())
     if recent:
         lines.append("## Recent Rooms")
         for room in recent[:5]:
