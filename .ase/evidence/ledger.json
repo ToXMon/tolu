@@ -1,0 +1,69 @@
+[
+  {
+    "timestamp": "2026-05-08T21:29:54.784084+00:00",
+    "category": "artifact",
+    "description": "Completed initial audit of skills, harnesses, and agent profiles for web/software engineering; identified fragmentation, weak evaluation gates, minimal developer/hacker metadata, and duplicated skill surfaces.",
+    "details": {
+      "source": "researcher audit",
+      "report_path": "/a0/usr/chats/cROJ8mqL/messages/3.txt"
+    },
+    "actor": "agent",
+    "severity": "info"
+  },
+  {
+    "timestamp": "2026-05-08T21:48:08.150946+00:00",
+    "category": "file_change",
+    "description": "Patched canonical operating guide and prepared lifecycle docs alignment work; root lifecycle files confirmed via terminal after text-editor path mismatch.",
+    "details": {
+      "files": [
+        "/a0/usr/workdir/tolu/CLAUDE.md",
+        "/a0/usr/workdir/tolu/unified-lifecycle-flow.md",
+        "/a0/usr/workdir/tolu/p1-unified-lifecycle-flow.md"
+      ],
+      "status": "canonical guide updated, lifecycle files pending verification"
+    },
+    "actor": "agent",
+    "severity": "info"
+  },
+  {
+    "timestamp": "2026-05-08T21:50:39.326561+00:00",
+    "category": "decision",
+    "description": "Confirmed root audit and lifecycle artifacts exist; decided to continue rebuild using terminal-backed edits and to anchor observability in existing .ase/.workpack/log artifacts rather than create a parallel system.",
+    "details": {
+      "root_files": [
+        "/a0/usr/workdir/tolu/skills-agents-audit-report.md",
+        "/a0/usr/workdir/tolu/agent-profile-comparison-report.md",
+        "/a0/usr/workdir/tolu/unified-lifecycle-flow.md",
+        "/a0/usr/workdir/tolu/p1-unified-lifecycle-flow.md"
+      ],
+      "observability_candidates": [
+        "/a0/usr/workdir/tolu/flashloan-system/.ase",
+        "/a0/usr/workdir/tolu/flashloan-system/.workpack",
+        "/a0/usr/workdir/tolu/flashloan-system/logs",
+        "/a0/usr/workdir/tolu/.ase"
+      ]
+    },
+    "actor": "agent",
+    "severity": "info"
+  },
+  {
+    "timestamp": "2026-05-08T21:54:43.034914+00:00",
+    "category": "file_change",
+    "description": "Rewrote skills-agents audit report into a ranked rebuild backlog and rewrote agent profile comparison report into explicit developer/hacker profile decisions with observability linkage.",
+    "details": {
+      "files": [
+        "/a0/usr/workdir/tolu/skills-agents-audit-report.md",
+        "/a0/usr/workdir/tolu/agent-profile-comparison-report.md"
+      ],
+      "focus": [
+        "canonical docs",
+        "skill eval rubric",
+        "profile contracts",
+        "existing observability assets",
+        ".ase/.workpack/logs"
+      ]
+    },
+    "actor": "agent",
+    "severity": "info"
+  }
+]
