@@ -7,7 +7,7 @@
 > **⚠️ CRITICAL:** Writing to `settings.json` does NOT initialize MCP servers. You MUST click **Apply now** in the UI (Settings → MCP/A2A → External MCP Servers) for servers to connect and tools to register. First `npx`/`uvx` run downloads packages (~30-60s per server).
 ---
 
-## All 18 Configured Servers
+## All 19 Configured Servers
 
 ### Crypto & Trading
 | Server | Package | Purpose |
@@ -52,9 +52,12 @@
 
 ### Memory
 | Server | Package | Purpose |
-|--------|---------|---------|
 | `memory` | `@modelcontextprotocol/server-memory` (npx) | Persistent knowledge graph |
 
+### Blockchain
+| Server | Package | Purpose |
+|--------|---------|---------|
+| `alchemy` | `@alchemy/mcp-server` (npx) | Blockchain data, NFTs, smart contracts, token balances, gas tracking (97 tools) |
 ---
 
 ## Tokens/API Keys Needed
@@ -71,6 +74,7 @@ Replace `YOUR_*` placeholders in settings.json:
 | slack | `SLACK_BOT_TOKEN` + `SLACK_TEAM_ID` | api.slack.com/apps |
 | figma | `FIGMA_ACCESS_TOKEN` | figma.com/settings |
 
+**Alchemy requires:** `ALCHEMY_API_KEY` from alchemy.com
 **No keys needed:** context7, puppeteer, playwright, chrome-devtools, crypto-price, crypto-signals, sqlite, filesystem, docker, memory
 
 ---
